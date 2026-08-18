@@ -23,7 +23,7 @@ const GROUP_CLASSES = [
 
 let recipe = null;
 let recipeFile = null;
-
+let recipeSha = null;
 
 /* ==============================
    URLからファイル名を取得
@@ -74,6 +74,8 @@ async function loadRecipe(file) {
             githubFile.content
         );
 
+    recipeSha =
+        githubFile.sha;
 
     return JSON.parse(content);
 }
@@ -643,6 +645,11 @@ function setupEditForm() {
                     "inputTitle"
                 ),
 
+            fileNameInput:
+                document.getElementById(
+                    "inputFileName"
+                ),
+
             categoryInput:
                 document.getElementById(
                     "inputCategory"
@@ -724,25 +731,85 @@ function setupEditForm() {
 
 
     /*
-     * 現段階ではローカル上だけ変更。
+     * 編集内容をGitHubへ保存する。
      *
-     * GitHub APIを追加すると、
-     * ここをGitHubへの保存処理に変更する。
+     * recipeShaを指定することで、
+     * 既存のレシピJSONを更新する。
      */
-
     recipeForm.setSaveHandler(
-        updatedRecipe => {
+        async (
+            updatedRecipe,
+            editingRecipe,
+            fileName
+        ) => {
 
-            recipe =
-                updatedRecipe;
+            try {
+
+                // ==============================
+                // JSON作成
+                // ==============================
+
+                const content =
+                    JSON.stringify(
+                        updatedRecipe,
+                        null,
+                        2
+                    );
 
 
-            renderRecipe();
+                // ==============================
+                // GitHubへ保存
+                // ==============================
+
+                const savedFile =
+                    await github.saveFile(
+                        `data/${recipeFile}`,
+                        content,
+                        `fix: レシピ「${updatedRecipe.title}」を更新`,
+                        recipeSha
+                    );
+
+                recipeSha =
+                    savedFile.content.sha;
 
 
-            alert(
-                "保存しました（現在はブラウザ上のみ）"
-            );
+                // ==============================
+                // 画面を更新
+                // ==============================
+
+                recipe =
+                    updatedRecipe;
+
+
+                renderRecipe();
+
+
+                console.log(
+                    "GitHubへの保存成功:",
+                    recipeFile
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "GitHubへの保存失敗:",
+                    error
+                );
+
+
+                alert(
+                    `レシピの保存に失敗しました。\n\n${error.message}`
+                );
+
+
+                /*
+                 * falseを返すことで、
+                 * RecipeForm側ではモーダルを閉じない。
+                 */
+
+                return false;
+            }
         }
     );
 }
