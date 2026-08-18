@@ -1,16 +1,4 @@
 [
-    {
-        "file": "macaroni-gratin.json",
-        "title": "マカロニグラタン",
-        "category": "主食",
-        "rating": 4,
-        "image": "https://example.com/macaroni-gratin.jpg"
-    },
-    {
-        "file": "oyakodon.json",
-        "title": "親子丼",
-        "category": "主食",
-        "rating": 5,
-        "image": ""
-    }
+    "macaroni-gratin.json",
+    "肉じゃが.json"
 ]
