@@ -1,0 +1,263 @@
+<!-- index.html -->
+<!-- bk1 -->
+<!-- -->
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>レシピ</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <h1>レシピ</h1>
+    </header>
+
+    <main>
+
+        <!-- 検索 -->
+        <section class="search-section">
+            <input
+                type="search"
+                id="searchInput"
+                class="search-input"
+                placeholder="レシピを検索"
+                autocomplete="off"
+            >
+        </section>
+
+        <!-- カテゴリ -->
+        <section class="category-section">
+            <div id="categoryList" class="category-list"></div>
+        </section>
+
+        <!-- 並び替え -->
+        <section class="sort-section">
+            <label for="sortSelect">並び替え</label>
+
+            <select id="sortSelect">
+                <option value="category">ジャンル順</option>
+                <option value="rating">評価順</option>
+                <option value="newest">新しい順</option>
+                <option value="oldest">古い順</option>
+            </select>
+        </section>
+
+        <!-- レシピ一覧 -->
+        <section>
+            <div id="recipeGrid" class="recipe-grid"></div>
+
+            <p id="emptyMessage" class="empty-message">
+                レシピがありません
+            </p>
+        </section>
+
+    </main>
+
+    <!-- レシピ追加ボタン -->
+    <button
+        id="addButton"
+        class="add-button"
+        type="button"
+        aria-label="レシピを追加"
+    >
+        ＋
+    </button>
+
+    <!-- レシピ追加画面 -->
+    <div id="modalBackground" class="modal-background"></div>
+
+    <section
+        id="recipeModal"
+        class="recipe-modal"
+        aria-hidden="true"
+    >
+
+        <header class="modal-header">
+            <button
+                id="closeModalButton"
+                class="modal-close-button"
+                type="button"
+                aria-label="閉じる"
+            >
+                ×
+            </button>
+
+            <h2>レシピ追加</h2>
+
+            <button
+                id="saveRecipeButton"
+                class="modal-save-button"
+                type="button"
+            >
+                保存
+            </button>
+        </header>
+
+        <div class="modal-content">
+
+            <!-- 基本情報 -->
+            <section class="form-section">
+
+                <div class="form-field">
+                    <label for="inputTitle">タイトル</label>
+                    <input
+                        id="inputTitle"
+                        type="text"
+                        placeholder="レシピ名"
+                    >
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-field">
+                        <label for="inputCategory">カテゴリ</label>
+
+                        <select id="inputCategory">
+                            <option value="主食">主食</option>
+                            <option value="肉類">肉類</option>
+                            <option value="魚類">魚類</option>
+                            <option value="副菜">副菜</option>
+                            <option value="おやつ">おやつ</option>
+                            <option value="他">他</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="inputSource">出典</label>
+
+                        <select id="inputSource">
+                            <option value="original">自作</option>
+                            <option value="arranged">アレンジ</option>
+                            <option value="reference">参考</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-field">
+                    <label for="inputRating">評価</label>
+
+                    <div class="rating-input">
+                        <input
+                            id="inputRating"
+                            type="range"
+                            min="0"
+                            max="5"
+                            step="1"
+                            value="0"
+                        >
+
+                        <span id="ratingValue">未設定</span>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="inputImage">画像URL</label>
+
+                    <input
+                        id="inputImage"
+                        type="url"
+                        placeholder="https://..."
+                    >
+                </div>
+
+                <div class="form-field">
+                    <label for="inputUrl">レシピURL</label>
+
+                    <input
+                        id="inputUrl"
+                        type="url"
+                        placeholder="https://..."
+                    >
+                </div>
+
+            </section>
+
+            <!-- 材料 -->
+            <section class="form-section">
+
+                <div class="section-heading">
+                    <h3>材料</h3>
+
+                    <button
+                        id="addIngredientButton"
+                        class="small-add-button"
+                        type="button"
+                    >
+                        ＋ 材料
+                    </button>
+                </div>
+
+                <div id="ingredients"></div>
+
+            </section>
+
+            <!-- 事前準備 -->
+            <section class="form-section">
+
+                <div class="section-heading">
+                    <h3>事前準備</h3>
+
+                    <button
+                        id="addPreparationButton"
+                        class="small-add-button"
+                        type="button"
+                    >
+                        ＋ 追加
+                    </button>
+                </div>
+
+                <div id="preparation"></div>
+
+            </section>
+
+            <!-- 手順 -->
+            <section class="form-section">
+
+                <div class="section-heading">
+                    <h3>手順</h3>
+
+                    <button
+                        id="addStepButton"
+                        class="small-add-button"
+                        type="button"
+                    >
+                        ＋ 手順
+                    </button>
+                </div>
+
+                <div id="steps"></div>
+
+            </section>
+
+            <!-- メモ -->
+            <section class="form-section">
+
+                <div class="section-heading">
+                    <h3>メモ</h3>
+                </div>
+
+                <textarea
+                    id="inputMemo"
+                    class="memo-input"
+                    placeholder="メモ"
+                ></textarea>
+
+            </section>
+
+        </div>
+
+    </section>
+
+    <script type="module" src="js/main.js"></script>
+
+</body>
+
+</html>
