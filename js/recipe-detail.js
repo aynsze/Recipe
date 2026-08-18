@@ -2,9 +2,9 @@
 // bk2
 // 詳細画面を担当
 
-
 import { RecipeForm } from "./recipe-form.js";
 import { github } from "./github-config.js";
+import { showNotice } from "./notice.js";
 
 const SOURCE_LABELS = {
     original: "自作",
@@ -743,6 +743,14 @@ function setupEditForm() {
             fileName
         ) => {
 
+            const savingNotice =
+                showNotice(
+                    "保存中...",
+                    {
+                        duration: null
+                    }
+                );
+
             try {
 
                 // ==============================
@@ -791,6 +799,8 @@ function setupEditForm() {
 
 
             } catch (error) {
+
+                savingNotice.close();
 
                 console.error(
                     "GitHubへの保存失敗:",

@@ -1,26 +1,12 @@
 // js/main.js
-// bk4
+// bk6
 // 全体を組み合わせるファイル
 
 
 import { RecipeList } from "./recipe-list.js";
 import { RecipeForm } from "./recipe-form.js";
 import { github } from "./github-config.js";
-
-// ==============================
-// notice表示
-// ==============================
-
-function showNotice(message) {
-
-    console.warn(message);
-
-    /*
-     * 現段階ではalertではなくconsole.warnのみ。
-     *
-     * 後で画面上にnotice UIを追加する。
-     */
-}
+import { showNotice } from "./notice.js";
 
 
 // ==============================
@@ -379,6 +365,13 @@ function initializeApp(recipes) {
                     return false;
                 }
 
+                const savingNotice =
+                    showNotice(
+                        "保存中...",
+                        {
+                            duration: null
+                        }
+                    );
 
                 try {
 
@@ -489,6 +482,8 @@ function initializeApp(recipes) {
 
                 } catch (error) {
 
+                    savingNotice.close();
+
                     console.error(
                         "GitHubへの保存失敗:",
                         error
@@ -498,7 +493,6 @@ function initializeApp(recipes) {
                     alert(
                         `レシピの保存に失敗しました。\n\n${error.message}`
                     );
-
 
                     return false;
                 }
