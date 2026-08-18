@@ -1,0 +1,30 @@
+{
+    "title": "マカロニグラタン",
+    "source": "arranged",
+    "category": "主食",
+    "rating": 4,
+    "image": "https://img省略",
+    "url": "https://省略",
+    "ingredients": [
+        {
+            "group": null,
+            "name": "鶏もも肉",
+            "amount": 300,
+            "unit": "g"
+        },
+        {
+            "group": null,
+            "name": "牛乳",
+            "amount": 400,
+            "unit": "ml"
+        }
+    ],
+    "preparation": [
+        "鶏もも肉を一口大に切る",
+        "玉ねぎを薄切りにする"
+    ],
+    "steps": [
+        "鍋にバターを溶かして、鶏肉を入れる"
+    ],
+    "memo": ""
+}
