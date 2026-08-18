@@ -1011,8 +1011,15 @@ export class RecipeForm {
             this.fileNameInput.value.trim();
 
 
+        /*
+         * ファイル名が空欄の場合は
+         * タイトルから自動生成する。
+         */
+
         if (!fileName) {
-            return null;
+
+            fileName =
+                this.titleInput.value.trim();
         }
 
 
@@ -1080,31 +1087,27 @@ export class RecipeForm {
         let fileName = null;
 
 
+        /*
+         * 新規追加の場合のみ
+         * ファイル名を取得する。
+         *
+         * 空欄の場合はタイトルから
+         * 自動生成する。
+         */
+
         if (!this.editingRecipe) {
 
             fileName =
-                this.fileNameInput.value.trim();
+                this.getFileName();
 
+
+            /*
+             * 使用できない文字が
+             * 含まれていた場合
+             */
 
             if (!fileName) {
-
-                alert(
-                    "ファイル名を入力してください"
-                );
-
-                this.fileNameInput.focus();
-
                 return;
-            }
-
-
-            if (
-                !fileName
-                    .toLowerCase()
-                    .endsWith(".json")
-            ) {
-
-                fileName += ".json";
             }
         }
 

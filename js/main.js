@@ -5,6 +5,7 @@
 
 import { RecipeList } from "./recipe-list.js";
 import { RecipeForm } from "./recipe-form.js";
+import { GitHubApi } from "./github-api.js";
 
 
 // ==============================
@@ -29,19 +30,20 @@ function showNotice(message) {
 
 async function loadIndex() {
 
-    const response =
-        await fetch("./data/index.json");
-
-    if (!response.ok) {
-
-        throw new Error(
-            `index.jsonの読み込みに失敗しました: ${response.status}`
+    const file =
+        await github.getFile(
+            "data/index.json"
         );
-    }
+
+
+    const content =
+        github.decodeBase64(
+            file.content
+        );
 
 
     const files =
-        await response.json();
+        JSON.parse(content);
 
 
     if (!Array.isArray(files)) {
@@ -93,7 +95,6 @@ async function loadIndex() {
     return uniqueFiles;
 }
 
-
 // ==============================
 // レシピJSON読み込み
 // ==============================
@@ -107,28 +108,31 @@ async function loadRecipes(files) {
 
                 try {
 
-                    const response =
-                        await fetch(
-                            `./data/${encodeURIComponent(file)}`
+                    const githubFile =
+                        await github.getFile(
+                            `data/${file}`
                         );
 
 
-                    if (!response.ok) {
-
-                        throw new Error(
-                            `${response.status}`
+                    const content =
+                        github.decodeBase64(
+                            githubFile.content
                         );
-                    }
 
 
                     const recipe =
-                        await response.json();
+                        JSON.parse(content);
 
 
                     return {
-                        success: true,
+
+                        success:
+                            true,
+
                         recipe: {
+
                             ...recipe,
+
                             file
                         }
                     };
@@ -148,8 +152,12 @@ async function loadRecipes(files) {
 
 
                     return {
-                        success: false,
-                        recipe: null
+
+                        success:
+                            false,
+
+                        recipe:
+                            null
                     };
                 }
             })
@@ -157,8 +165,14 @@ async function loadRecipes(files) {
 
 
     return results
-        .filter(result => result.success)
-        .map(result => result.recipe);
+        .filter(
+            result =>
+                result.success
+        )
+        .map(
+            result =>
+                result.recipe
+        );
 }
 
 
@@ -400,7 +414,6 @@ function initializeApp(recipes) {
         () => recipeForm.open()
     );
 }
-
 
 // ==============================
 // アプリ起動

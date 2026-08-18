@@ -1,38 +1,49 @@
 // js/github-api.js
-// bk1
+// bk3
 // GitHub APIとの通信を担当
 
 
-const GITHUB_API_BASE =
+const API_BASE =
     "https://api.github.com";
 
 
-export class GitHubAPI {
+export class GitHubApi {
 
     constructor({
         owner,
-        repo,
-        token
+        repository,
+        token,
+        branch = "main"
     }) {
 
-        this.owner = owner;
-        this.repo = repo;
-        this.token = token;
+        this.owner =
+            owner;
+
+        this.repository =
+            repository;
+
+        this.token =
+            token;
+
+        this.branch =
+            branch;
     }
 
 
-    /**
-     * GitHub APIへリクエスト
-     */
+    /* ==============================
+       共通リクエスト
+       ============================== */
+
     async request(path, options = {}) {
 
         const response =
             await fetch(
-                `${GITHUB_API_BASE}${path}`,
+                `${API_BASE}${path}`,
                 {
                     ...options,
 
                     headers: {
+
                         "Accept":
                             "application/vnd.github+json",
 
@@ -40,9 +51,12 @@ export class GitHubAPI {
                             `Bearer ${this.token}`,
 
                         "X-GitHub-Api-Version":
-                            "2022-11-28",
+                            "2026-03-10",
 
-                        ...options.headers
+                        "Content-Type":
+                            "application/json",
+
+                        ...(options.headers || {})
                     }
                 }
             );
@@ -51,7 +65,7 @@ export class GitHubAPI {
         if (!response.ok) {
 
             let message =
-                `GitHub API Error: ${response.status}`;
+                `${response.status}`;
 
             try {
 
@@ -59,14 +73,18 @@ export class GitHubAPI {
                     await response.json();
 
                 if (data.message) {
-                    message += ` ${data.message}`;
+                    message =
+                        data.message;
                 }
 
             } catch {
-                // JSONでない場合はステータスだけ使用
+                // JSONでない場合はstatusのみ
             }
 
-            throw new Error(message);
+
+            throw new Error(
+                `GitHub APIエラー: ${message}`
+            );
         }
 
 
@@ -74,33 +92,57 @@ export class GitHubAPI {
     }
 
 
-    /**
-     * ファイルを取得
-     */
+    /* ==============================
+       パスエンコード
+       ============================== */
+
+    encodePath(path) {
+
+        return path
+            .split("/")
+            .map(
+                part =>
+                    encodeURIComponent(part)
+            )
+            .join("/");
+    }
+
+
+    /* ==============================
+       ファイル取得
+       ============================== */
+
     async getFile(path) {
 
         return await this.request(
-            `/repos/${this.owner}/${this.repo}/contents/${path}`
+            `/repos/${encodeURIComponent(this.owner)}` +
+            `/${encodeURIComponent(this.repository)}` +
+            `/contents/${this.encodePath(path)}` +
+            `?ref=${encodeURIComponent(this.branch)}`
         );
     }
 
 
-    /**
-     * ファイルを保存
-     *
-     * sha があれば更新
-     * なければ新規作成
-     */
-    async putFile({
+    /* ==============================
+       ファイル作成・更新
+       ============================== */
+
+    async saveFile(
         path,
         content,
         message,
-        sha = undefined
-    }) {
+        sha = null
+    ) {
 
         const body = {
+
             message,
-            content
+
+            content:
+                this.encodeBase64(content),
+
+            branch:
+                this.branch
         };
 
 
@@ -110,18 +152,95 @@ export class GitHubAPI {
 
 
         return await this.request(
-            `/repos/${this.owner}/${this.repo}/contents/${path}`,
+            `/repos/${encodeURIComponent(this.owner)}` +
+            `/${encodeURIComponent(this.repository)}` +
+            `/contents/${this.encodePath(path)}`,
             {
                 method: "PUT",
-
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
 
                 body:
                     JSON.stringify(body)
             }
         );
     }
+
+
+    /* ==============================
+       ファイル削除
+       ============================== */
+
+    async deleteFile(
+        path,
+        message,
+        sha
+    ) {
+
+        return await this.request(
+            `/repos/${encodeURIComponent(this.owner)}` +
+            `/${encodeURIComponent(this.repository)}` +
+            `/contents/${this.encodePath(path)}`,
+            {
+                method: "DELETE",
+
+                body:
+                    JSON.stringify({
+
+                        message,
+
+                        sha,
+
+                        branch:
+                            this.branch
+                    })
+            }
+        );
+    }
+
+
+    /* ==============================
+       UTF-8 → Base64
+       ============================== */
+
+    encodeBase64(text) {
+
+        const bytes =
+            new TextEncoder()
+                .encode(text);
+
+
+        let binary = "";
+
+        bytes.forEach(byte => {
+
+            binary +=
+                String.fromCharCode(byte);
+        });
+
+
+        return btoa(binary);
+    }
+
+    /* ==============================
+       Base64 → UTF-8
+       ============================== */
+
+    decodeBase64(base64) {
+
+        const binary =
+            atob(
+                base64.replace(/\n/g, "")
+            );
+
+
+        const bytes =
+            Uint8Array.from(
+                binary,
+                char => char.charCodeAt(0)
+            );
+
+
+        return new TextDecoder()
+            .decode(bytes);
+    }
+
 }
