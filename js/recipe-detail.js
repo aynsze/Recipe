@@ -1,11 +1,10 @@
 // js/recipe-detail.js
-// bk1
+// bk2
 // 詳細画面を担当
 
-// js/recipe-detail.js
 
 import { RecipeForm } from "./recipe-form.js";
-
+import { github } from "./github-config.js";
 
 const SOURCE_LABELS = {
     original: "自作",
@@ -46,6 +45,7 @@ function getRecipeFile() {
 async function loadRecipe(file) {
 
     if (!file) {
+
         throw new Error(
             "レシピファイルが指定されていません"
         );
@@ -56,27 +56,26 @@ async function loadRecipe(file) {
      * セキュリティ上、data/以外を
      * 読み込まないようにする。
      */
+
     const safeFile =
         file
             .split("/")
             .pop();
 
 
-    const response =
-        await fetch(
-            `./data/${encodeURIComponent(safeFile)}`
+    const githubFile =
+        await github.getFile(
+            `data/${safeFile}`
         );
 
 
-    if (!response.ok) {
-
-        throw new Error(
-            `レシピの読み込みに失敗しました: ${response.status}`
+    const content =
+        github.decodeBase64(
+            githubFile.content
         );
-    }
 
 
-    return await response.json();
+    return JSON.parse(content);
 }
 
 

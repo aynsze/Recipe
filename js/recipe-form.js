@@ -1066,7 +1066,7 @@ export class RecipeForm {
        保存
        ============================== */
 
-    save() {
+    async save() {
 
         const recipe =
             this.getRecipe();
@@ -1115,7 +1115,7 @@ export class RecipeForm {
         if (this.onSave) {
 
             const saved =
-                this.onSave(
+                await this.onSave(
                     recipe,
                     this.editingRecipe,
                     fileName

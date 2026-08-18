@@ -1,12 +1,11 @@
 // js/main.js
-// bk3
+// bk4
 // 全体を組み合わせるファイル
 
 
 import { RecipeList } from "./recipe-list.js";
 import { RecipeForm } from "./recipe-form.js";
-import { GitHubApi } from "./github-api.js";
-
+import { github } from "./github-config.js";
 
 // ==============================
 // notice表示
@@ -323,7 +322,7 @@ function initializeApp(recipes) {
     // ==============================
 
     recipeForm.setSaveHandler(
-        (recipe, editingRecipe, fileName) => {
+        async (recipe, editingRecipe, fileName) => {
 
             console.log("レシピ:", recipe);
             console.log("編集対象:", editingRecipe);
@@ -381,25 +380,128 @@ function initializeApp(recipes) {
                 }
 
 
-                /*
-                 * 現段階では仮追加のみ。
-                 *
-                 * GitHubへの保存処理を追加したら、
-                 * ここでJSONファイルとindex.jsonを
-                 * 更新する。
-                 */
+                try {
 
-                recipeList.addRecipe({
-                    ...recipe,
-                    file: fileName
-                });
+                    // ==============================
+                    // レシピJSON作成
+                    // ==============================
+
+                    const content =
+                        JSON.stringify(
+                            recipe,
+                            null,
+                            2
+                        );
 
 
-                console.log(
-                    "新規追加:",
-                    fileName,
-                    recipe
-                );
+                    // ==============================
+                    // index.json取得
+                    // ==============================
+
+                    const indexFile =
+                        await github.getFile(
+                            "data/index.json"
+                        );
+
+
+                    const indexContent =
+                        github.decodeBase64(
+                            indexFile.content
+                        );
+
+
+                    const files =
+                        JSON.parse(indexContent);
+
+
+                    if (!Array.isArray(files)) {
+
+                        throw new Error(
+                            "index.jsonは配列ではありません"
+                        );
+                    }
+
+
+                    // ==============================
+                    // index.jsonに追加
+                    // ==============================
+
+                    files.push(fileName);
+
+
+                    const newIndexContent =
+                        JSON.stringify(
+                            files,
+                            null,
+                            2
+                        );
+
+
+                    // ==============================
+                    // レシピJSON + index.json
+                    // 1コミットでGitHubへ保存
+                    // ==============================
+
+                    await github.commitFiles(
+
+                        [
+
+                            {
+                                path:
+                                    `data/${fileName}`,
+
+                                content:
+                                    content
+                            },
+
+                            {
+                                path:
+                                    "data/index.json",
+
+                                content:
+                                    newIndexContent
+                            }
+
+                        ],
+
+                        `feat: レシピ「${recipe.title}」を追加`
+                    );
+
+
+                    // ==============================
+                    // 画面に追加
+                    // ==============================
+
+                    recipeList.addRecipe({
+
+                        ...recipe,
+
+                        file:
+                            fileName
+                    });
+
+
+                    console.log(
+                        "GitHubへの保存成功:",
+                        fileName
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "GitHubへの保存失敗:",
+                        error
+                    );
+
+
+                    alert(
+                        `レシピの保存に失敗しました。\n\n${error.message}`
+                    );
+
+
+                    return false;
+                }
             }
         }
     );
@@ -414,6 +516,7 @@ function initializeApp(recipes) {
         () => recipeForm.open()
     );
 }
+
 
 // ==============================
 // アプリ起動

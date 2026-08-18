@@ -1,5 +1,5 @@
 // js/github-api.js
-// bk3
+// bk4
 // GitHub APIとの通信を担当
 
 
@@ -241,6 +241,172 @@ export class GitHubApi {
 
         return new TextDecoder()
             .decode(bytes);
+    }
+
+    /* ==============================
+       複数ファイルを1コミットで保存
+       ============================== */
+
+    async commitFiles(
+        files,
+        message
+    ) {
+
+        /*
+         * files:
+         *
+         * [
+         *     {
+         *         path: "data/recipe.json",
+         *         content: "..."
+         *     },
+         *     {
+         *         path: "data/index.json",
+         *         content: "..."
+         *     }
+         * ]
+         */
+
+
+        if (
+            !Array.isArray(files) ||
+            files.length === 0
+        ) {
+
+            throw new Error(
+                "コミットするファイルがありません"
+            );
+        }
+
+
+        // ==============================
+        // 現在のブランチのcommitを取得
+        // ==============================
+
+        const ref =
+            await this.request(
+                `/repos/${encodeURIComponent(this.owner)}` +
+                `/${encodeURIComponent(this.repository)}` +
+                `/git/ref/heads/${encodeURIComponent(this.branch)}`
+            );
+
+
+        const baseCommitSha =
+            ref.object.sha;
+
+
+        // ==============================
+        // 現在のcommitのtreeを取得
+        // ==============================
+
+        const baseCommit =
+            await this.request(
+                `/repos/${encodeURIComponent(this.owner)}` +
+                `/${encodeURIComponent(this.repository)}` +
+                `/git/commits/${baseCommitSha}`
+            );
+
+
+        const baseTreeSha =
+            baseCommit.tree.sha;
+
+
+        // ==============================
+        // 新しいtreeを作成
+        // ==============================
+
+        const tree =
+            files.map(file => ({
+
+                path:
+                    file.path,
+
+                mode:
+                    "100644",
+
+                type:
+                    "blob",
+
+                content:
+                    file.content
+            }));
+
+
+        const newTree =
+            await this.request(
+                `/repos/${encodeURIComponent(this.owner)}` +
+                `/${encodeURIComponent(this.repository)}` +
+                `/git/trees`,
+                {
+                    method:
+                        "POST",
+
+                    body:
+                        JSON.stringify({
+
+                            base_tree:
+                                baseTreeSha,
+
+                            tree
+                        })
+                }
+            );
+
+
+        // ==============================
+        // commitを作成
+        // ==============================
+
+        const newCommit =
+            await this.request(
+                `/repos/${encodeURIComponent(this.owner)}` +
+                `/${encodeURIComponent(this.repository)}` +
+                `/git/commits`,
+                {
+                    method:
+                        "POST",
+
+                    body:
+                        JSON.stringify({
+
+                            message,
+
+                            tree:
+                                newTree.sha,
+
+                            parents:
+                                [baseCommitSha]
+                        })
+                }
+            );
+
+
+        // ==============================
+        // ブランチを新しいcommitへ移動
+        // ==============================
+
+        await this.request(
+            `/repos/${encodeURIComponent(this.owner)}` +
+            `/${encodeURIComponent(this.repository)}` +
+            `/git/refs/heads/${encodeURIComponent(this.branch)}`,
+            {
+                method:
+                    "PATCH",
+
+                body:
+                    JSON.stringify({
+
+                        sha:
+                            newCommit.sha,
+
+                        force:
+                            false
+                    })
+            }
+        );
+
+
+        return newCommit;
     }
 
 }
