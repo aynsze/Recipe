@@ -484,6 +484,25 @@ main {
     gap: 10px;
 }
 
+.file-name-field {
+    margin-bottom: 12px;
+}
+
+.file-name-field label {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.file-name-field input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.file-name-field small {
+    display: block;
+    margin-top: 4px;
+    color: #777;
+}
 
 /* ==============================
    評価

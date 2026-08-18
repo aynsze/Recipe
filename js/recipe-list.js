@@ -1,6 +1,7 @@
 // js/recipe-list.js
-// bk1
+// bk2
 // 一覧表示・検索・カテゴリ・並び替えを担当
+
 
 const CATEGORY_ORDER = [
     "主食",
@@ -10,6 +11,7 @@ const CATEGORY_ORDER = [
     "おやつ",
     "他"
 ];
+
 
 const SOURCE_LABELS = {
     original: "自作",
@@ -31,15 +33,30 @@ export class RecipeList {
         categoryListElement,
         onRecipeClick
     }) {
-        this.gridElement = gridElement;
-        this.emptyMessageElement = emptyMessageElement;
-        this.searchInput = searchInput;
-        this.sortSelect = sortSelect;
-        this.categoryListElement = categoryListElement;
-        this.onRecipeClick = onRecipeClick;
+
+        this.gridElement =
+            gridElement;
+
+        this.emptyMessageElement =
+            emptyMessageElement;
+
+        this.searchInput =
+            searchInput;
+
+        this.sortSelect =
+            sortSelect;
+
+        this.categoryListElement =
+            categoryListElement;
+
+        this.onRecipeClick =
+            onRecipeClick;
+
 
         this.recipes = [];
-        this.selectedCategory = "すべて";
+
+        this.selectedCategory =
+            "すべて";
     }
 
 
@@ -47,27 +64,43 @@ export class RecipeList {
      * 初期化
      */
     init(recipes) {
-        this.recipes = [...recipes];
+
+        this.recipes =
+            [...recipes];
 
         this.createCategoryButtons();
 
-        this.searchInput.addEventListener("input", () => {
-            this.render();
-        });
 
-        this.sortSelect.addEventListener("change", () => {
-            this.render();
-        });
+        this.searchInput.addEventListener(
+            "input",
+            () => {
+                this.render();
+            }
+        );
+
+
+        this.sortSelect.addEventListener(
+            "change",
+            () => {
+                this.render();
+            }
+        );
+
 
         this.render();
     }
 
 
     /**
-     * レシピを追加
+     * レシピを一覧に追加
+     *
+     * ※現在はローカル上の一覧に追加するだけ。
+     *   GitHub API実装時に保存処理を追加する。
      */
     addRecipe(recipe) {
+
         this.recipes.push(recipe);
+
         this.render();
     }
 
@@ -77,35 +110,60 @@ export class RecipeList {
      */
     createCategoryButtons() {
 
-        this.categoryListElement.innerHTML = "";
+        this.categoryListElement.innerHTML =
+            "";
+
 
         const categories = [
             "すべて",
             ...CATEGORY_ORDER
         ];
 
+
         categories.forEach(category => {
 
-            const button = document.createElement("button");
+            const button =
+                document.createElement("button");
 
-            button.type = "button";
-            button.className = "category-button";
+            button.type =
+                "button";
 
-            if (category === this.selectedCategory) {
-                button.classList.add("active");
+            button.className =
+                "category-button";
+
+
+            if (
+                category ===
+                this.selectedCategory
+            ) {
+
+                button.classList.add(
+                    "active"
+                );
             }
 
-            button.textContent = category;
 
-            button.addEventListener("click", () => {
+            button.textContent =
+                category;
 
-                this.selectedCategory = category;
 
-                this.createCategoryButtons();
-                this.render();
-            });
+            button.addEventListener(
+                "click",
+                () => {
 
-            this.categoryListElement.appendChild(button);
+                    this.selectedCategory =
+                        category;
+
+                    this.createCategoryButtons();
+
+                    this.render();
+                }
+            );
+
+
+            this.categoryListElement.appendChild(
+                button
+            );
         });
     }
 
@@ -120,35 +178,78 @@ export class RecipeList {
                 .trim()
                 .toLowerCase();
 
-        return this.recipes.filter(recipe => {
 
-            if (
-                this.selectedCategory !== "すべて" &&
-                recipe.category !== this.selectedCategory
-            ) {
-                return false;
+        return this.recipes.filter(
+            recipe => {
+
+                // ------------------------------
+                // カテゴリ
+                // ------------------------------
+
+                if (
+                    this.selectedCategory !==
+                    "すべて"
+                    &&
+                    recipe.category !==
+                    this.selectedCategory
+                ) {
+
+                    return false;
+                }
+
+
+                // ------------------------------
+                // キーワード
+                // ------------------------------
+
+                if (!keyword) {
+                    return true;
+                }
+
+
+                const ingredientText =
+                    (recipe.ingredients || [])
+                        .map(
+                            ingredient =>
+                                ingredient.name || ""
+                        )
+                        .join(" ");
+
+
+                const preparationText =
+                    (recipe.preparation || [])
+                        .join(" ");
+
+
+                const stepsText =
+                    (recipe.steps || [])
+                        .join(" ");
+
+
+                const searchableText = [
+
+                    recipe.title || "",
+
+                    recipe.category || "",
+
+                    recipe.memo || "",
+
+                    ingredientText,
+
+                    preparationText,
+
+                    stepsText
+
+                ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                return searchableText.includes(
+                    keyword
+                );
             }
-
-            if (!keyword) {
-                return true;
-            }
-
-            const ingredientText =
-                (recipe.ingredients || [])
-                    .map(ingredient => ingredient.name || "")
-                    .join(" ");
-
-            const searchableText = [
-                recipe.title || "",
-                recipe.category || "",
-                recipe.memo || "",
-                ingredientText
-            ]
-                .join(" ")
-                .toLowerCase();
-
-            return searchableText.includes(keyword);
-        });
+        );
     }
 
 
@@ -157,58 +258,119 @@ export class RecipeList {
      */
     sortRecipes(recipes) {
 
-        const sorted = [...recipes];
+        const sorted =
+            [...recipes];
+
 
         switch (this.sortSelect.value) {
 
+
+            // ------------------------------
+            // 評価順
+            // ------------------------------
+
             case "rating":
+
                 sorted.sort((a, b) => {
 
-                    const ratingA = Number(a.rating) || 0;
-                    const ratingB = Number(b.rating) || 0;
+                    const ratingA =
+                        Number(a.rating) || 0;
 
-                    if (ratingA !== ratingB) {
-                        return ratingB - ratingA;
+                    const ratingB =
+                        Number(b.rating) || 0;
+
+
+                    if (
+                        ratingA !== ratingB
+                    ) {
+
+                        return (
+                            ratingB -
+                            ratingA
+                        );
                     }
 
-                    return this.categoryOrder(a.category)
-                        - this.categoryOrder(b.category);
+
+                    return (
+                        this.categoryOrder(
+                            a.category
+                        )
+                        -
+                        this.categoryOrder(
+                            b.category
+                        )
+                    );
                 });
 
                 break;
 
 
+            // ------------------------------
+            // 新しい順
+            // ------------------------------
+
             case "newest":
-                // index.jsonの並びを新しい順として扱う
+
+                // index.jsonの並びを
+                // 新しい順として扱う
                 sorted.reverse();
+
                 break;
 
+
+            // ------------------------------
+            // 古い順
+            // ------------------------------
 
             case "oldest":
-                // index.jsonの並びをそのまま使用
+
+                // index.jsonの並びを
+                // そのまま使用
                 break;
 
+
+            // ------------------------------
+            // カテゴリ順
+            // ------------------------------
 
             case "category":
             default:
+
                 sorted.sort((a, b) => {
 
                     const categoryA =
-                        this.categoryOrder(a.category);
+                        this.categoryOrder(
+                            a.category
+                        );
 
                     const categoryB =
-                        this.categoryOrder(b.category);
+                        this.categoryOrder(
+                            b.category
+                        );
 
-                    if (categoryA !== categoryB) {
-                        return categoryA - categoryB;
+
+                    if (
+                        categoryA !==
+                        categoryB
+                    ) {
+
+                        return (
+                            categoryA -
+                            categoryB
+                        );
                     }
 
-                    return (Number(a.rating) || 0)
-                        - (Number(b.rating) || 0);
+
+                    return (
+                        (Number(a.rating) || 0)
+                        -
+                        (Number(b.rating) || 0)
+                    );
                 });
 
                 break;
         }
+
 
         return sorted;
     }
@@ -219,7 +381,11 @@ export class RecipeList {
      */
     categoryOrder(category) {
 
-        const index = CATEGORY_ORDER.indexOf(category);
+        const index =
+            CATEGORY_ORDER.indexOf(
+                category
+            );
+
 
         return index === -1
             ? CATEGORY_ORDER.length
@@ -232,21 +398,34 @@ export class RecipeList {
      */
     render() {
 
-        const filtered = this.getFilteredRecipes();
-        const sorted = this.sortRecipes(filtered);
+        const filtered =
+            this.getFilteredRecipes();
 
-        this.gridElement.innerHTML = "";
+
+        const sorted =
+            this.sortRecipes(
+                filtered
+            );
+
+
+        this.gridElement.innerHTML =
+            "";
+
 
         this.emptyMessageElement.style.display =
             sorted.length === 0
                 ? "block"
                 : "none";
 
+
         sorted.forEach(recipe => {
 
-            const card = this.createCard(recipe);
+            const card =
+                this.createCard(recipe);
 
-            this.gridElement.appendChild(card);
+            this.gridElement.appendChild(
+                card
+            );
         });
     }
 
@@ -256,127 +435,267 @@ export class RecipeList {
      */
     createCard(recipe) {
 
-        const card = document.createElement("article");
+        const card =
+            document.createElement(
+                "article"
+            );
 
-        card.className = "recipe-card";
 
-        card.addEventListener("click", () => {
+        card.className =
+            "recipe-card";
 
-            if (this.onRecipeClick) {
-                this.onRecipeClick(recipe);
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                if (this.onRecipeClick) {
+
+                    this.onRecipeClick(
+                        recipe
+                    );
+                }
             }
-        });
+        );
 
 
+        // ==============================
         // 画像
-        const imageWrap = document.createElement("div");
+        // ==============================
 
-        imageWrap.className = "recipe-image-wrap";
+        const imageWrap =
+            document.createElement(
+                "div"
+            );
+
+
+        imageWrap.className =
+            "recipe-image-wrap";
 
 
         if (
-            typeof recipe.image === "string" &&
+            typeof recipe.image ===
+            "string"
+            &&
             recipe.image.trim() !== ""
         ) {
 
-            const image = document.createElement("img");
+            const image =
+                document.createElement(
+                    "img"
+                );
 
-            image.className = "recipe-image";
-            image.src = recipe.image;
-            image.alt = recipe.title || "レシピ画像";
-            image.loading = "lazy";
 
-            image.addEventListener("error", () => {
+            image.className =
+                "recipe-image";
 
-                image.remove();
 
-                const noImage =
-                    document.createElement("div");
+            image.src =
+                recipe.image;
 
-                noImage.className = "no-image";
-                noImage.textContent = "🍽";
 
-                imageWrap.prepend(noImage);
-            });
+            image.alt =
+                recipe.title ||
+                "レシピ画像";
 
-            imageWrap.appendChild(image);
+
+            image.loading =
+                "lazy";
+
+
+            image.addEventListener(
+                "error",
+                () => {
+
+                    image.remove();
+
+
+                    const noImage =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    noImage.className =
+                        "no-image";
+
+
+                    noImage.textContent =
+                        "🍽";
+
+
+                    imageWrap.prepend(
+                        noImage
+                    );
+                }
+            );
+
+
+            imageWrap.appendChild(
+                image
+            );
 
         } else {
 
             const noImage =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
-            noImage.className = "no-image";
-            noImage.textContent = "🍽";
 
-            imageWrap.appendChild(noImage);
+            noImage.className =
+                "no-image";
+
+
+            noImage.textContent =
+                "🍽";
+
+
+            imageWrap.appendChild(
+                noImage
+            );
         }
 
 
+        // ==============================
         // 評価
-        const rating = Number(recipe.rating) || 0;
+        // ==============================
+
+        const rating =
+            Number(recipe.rating) || 0;
+
 
         if (rating > 0) {
 
             const ratingElement =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
-            ratingElement.className = "recipe-rating";
-            ratingElement.textContent = `★ ${rating}`;
 
-            imageWrap.appendChild(ratingElement);
+            ratingElement.className =
+                "recipe-rating";
+
+
+            ratingElement.textContent =
+                `★ ${rating}`;
+
+
+            imageWrap.appendChild(
+                ratingElement
+            );
         }
 
 
+        // ==============================
         // 情報
-        const info = document.createElement("div");
+        // ==============================
 
-        info.className = "recipe-info";
+        const info =
+            document.createElement(
+                "div"
+            );
 
 
+        info.className =
+            "recipe-info";
+
+
+        // ------------------------------
         // タイトル
+        // ------------------------------
+
         const title =
-            document.createElement("h2");
-
-        title.className = "recipe-title";
-        title.textContent = recipe.title || "";
-
-        info.appendChild(title);
+            document.createElement(
+                "h2"
+            );
 
 
+        title.className =
+            "recipe-title";
+
+
+        title.textContent =
+            recipe.title || "";
+
+
+        info.appendChild(
+            title
+        );
+
+
+        // ------------------------------
         // メタ情報
-        const meta =
-            document.createElement("div");
+        // ------------------------------
 
-        meta.className = "recipe-meta";
+        const meta =
+            document.createElement(
+                "div"
+            );
+
+
+        meta.className =
+            "recipe-meta";
 
 
         const source =
-            document.createElement("span");
+            document.createElement(
+                "span"
+            );
 
-        source.className = "recipe-source";
+
+        source.className =
+            "recipe-source";
+
 
         source.textContent =
-            SOURCE_LABELS[recipe.source] || "";
+            SOURCE_LABELS[
+                recipe.source
+            ] || "";
 
 
         const category =
-            document.createElement("span");
+            document.createElement(
+                "span"
+            );
 
-        category.className = "recipe-category";
+
+        category.className =
+            "recipe-category";
+
 
         category.textContent =
             recipe.category || "";
 
 
-        meta.appendChild(source);
-        meta.appendChild(category);
+        meta.appendChild(
+            source
+        );
 
-        info.appendChild(meta);
+
+        meta.appendChild(
+            category
+        );
 
 
-        card.appendChild(imageWrap);
-        card.appendChild(info);
+        info.appendChild(
+            meta
+        );
+
+
+        // ==============================
+        // カード完成
+        // ==============================
+
+        card.appendChild(
+            imageWrap
+        );
+
+
+        card.appendChild(
+            info
+        );
+
 
         return card;
     }

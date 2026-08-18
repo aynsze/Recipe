@@ -1,5 +1,5 @@
 // js/recipe-form.js
-// bk1
+// bk3
 // JSON型を作る部分、追加・編集共通化
 
 const UNIT_OPTIONS = [
@@ -38,6 +38,8 @@ export class RecipeForm {
         saveButton,
 
         titleInput,
+        fileNameInput,
+
         categoryInput,
         sourceInput,
         ratingInput,
@@ -62,6 +64,8 @@ export class RecipeForm {
         this.saveButton = saveButton;
 
         this.titleInput = titleInput;
+        this.fileNameInput = fileNameInput;
+
         this.categoryInput = categoryInput;
         this.sourceInput = sourceInput;
         this.ratingInput = ratingInput;
@@ -159,11 +163,17 @@ export class RecipeForm {
 
         if (recipe) {
 
+            // 編集
             this.loadRecipe(recipe);
+
+            this.setFileNameMode(false);
 
         } else {
 
+            // 新規追加
             this.reset();
+
+            this.setFileNameMode(true);
         }
 
 
@@ -185,6 +195,28 @@ export class RecipeForm {
 
 
         this.titleInput.focus();
+    }
+
+
+    /* ==============================
+       ファイル名入力欄の表示
+       ============================== */
+
+    setFileNameMode(isNew) {
+
+        const wrapper =
+            this.fileNameInput?.closest(
+                ".file-name-field"
+            );
+
+
+        if (!wrapper) {
+            return;
+        }
+
+
+        wrapper.style.display =
+            isNew ? "" : "none";
     }
 
 
@@ -225,6 +257,9 @@ export class RecipeForm {
     reset() {
 
         this.titleInput.value = "";
+
+        this.fileNameInput.value = "";
+
 
         this.categoryInput.value =
             "主食";
@@ -301,18 +336,14 @@ export class RecipeForm {
         this.ingredientsContainer.innerHTML =
             "";
 
-
         this.preparationContainer.innerHTML =
             "";
-
 
         this.stepsContainer.innerHTML =
             "";
 
 
-        /*
-         * 既存材料
-         */
+        /* 材料 */
 
         const ingredients =
             Array.isArray(recipe.ingredients)
@@ -330,16 +361,10 @@ export class RecipeForm {
         );
 
 
-        /*
-         * 最後に空行を1つ追加
-         */
-
         this.addIngredientRow();
 
 
-        /*
-         * 事前準備
-         */
+        /* 事前準備 */
 
         const preparation =
             Array.isArray(recipe.preparation)
@@ -360,9 +385,7 @@ export class RecipeForm {
         this.addPreparationRow();
 
 
-        /*
-         * 手順
-         */
+        /* 手順 */
 
         const steps =
             Array.isArray(recipe.steps)
@@ -571,9 +594,7 @@ export class RecipeForm {
        事前準備行
        ============================== */
 
-    addPreparationRow(
-        value = ""
-    ) {
+    addPreparationRow(value = "") {
 
         const row =
             document.createElement(
@@ -834,17 +855,6 @@ export class RecipeForm {
                 amountValue;
 
 
-            /*
-             * 数値ならnumberとして保存。
-             *
-             * 例：
-             * "300" → 300
-             * "1.5" → 1.5
-             *
-             * "1/2" → "1/2"
-             * "適量" → "適量"
-             */
-
             if (
                 amountValue !== "" &&
                 !Number.isNaN(
@@ -992,6 +1002,60 @@ export class RecipeForm {
 
 
     /* ==============================
+       ファイル名
+       ============================== */
+
+    getFileName() {
+
+        let fileName =
+            this.fileNameInput.value.trim();
+
+
+        if (!fileName) {
+            return null;
+        }
+
+
+        /*
+         * パスとして解釈される文字を禁止。
+         *
+         * 日本語・英数字・空白・
+         * ハイフン・アンダースコアなどは使用可能。
+         */
+
+        if (
+            /[\/\\:*?"<>|]/.test(fileName)
+        ) {
+
+            alert(
+                "ファイル名に使用できない文字が含まれています"
+            );
+
+            this.fileNameInput.focus();
+
+            return null;
+        }
+
+
+        /*
+         * .jsonが付いていなければ追加
+         */
+
+        if (
+            !fileName
+                .toLowerCase()
+                .endsWith(".json")
+        ) {
+
+            fileName += ".json";
+        }
+
+
+        return fileName;
+    }
+
+
+    /* ==============================
        保存
        ============================== */
 
@@ -1013,12 +1077,56 @@ export class RecipeForm {
         }
 
 
+        let fileName = null;
+
+
+        if (!this.editingRecipe) {
+
+            fileName =
+                this.fileNameInput.value.trim();
+
+
+            if (!fileName) {
+
+                alert(
+                    "ファイル名を入力してください"
+                );
+
+                this.fileNameInput.focus();
+
+                return;
+            }
+
+
+            if (
+                !fileName
+                    .toLowerCase()
+                    .endsWith(".json")
+            ) {
+
+                fileName += ".json";
+            }
+        }
+
+
         if (this.onSave) {
 
-            this.onSave(
-                recipe,
-                this.editingRecipe
-            );
+            const saved =
+                this.onSave(
+                    recipe,
+                    this.editingRecipe,
+                    fileName
+                );
+
+
+            /*
+             * falseが返された場合は
+             * 保存失敗としてフォームを閉じない。
+             */
+
+            if (saved === false) {
+                return;
+            }
         }
 
 
