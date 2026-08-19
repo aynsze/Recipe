@@ -1,5 +1,5 @@
 // js/github-api.js
-// bk4
+// bk5
 // GitHub APIとの通信を担当
 
 const API_BASE =
@@ -33,28 +33,41 @@ export class GitHubApi {
 
     async request(path, options = {}) {
 
+        const headers = {
+
+            "Accept":
+                "application/vnd.github+json",
+
+            "X-GitHub-Api-Version":
+                "2026-03-10",
+
+            "Content-Type":
+                "application/json",
+
+            ...(options.headers || {})
+        };
+
+        /*
+         * トークンがある場合だけ
+         * Authorizationヘッダーを付ける。
+         *
+         * 未ログインでもPublicリポジトリの
+         * 読み込みは可能。
+         */
+
+        if (this.token) {
+
+            headers.Authorization =
+                `Bearer ${this.token}`;
+        }
+
         const response =
             await fetch(
                 `${API_BASE}${path}`,
                 {
                     ...options,
 
-                    headers: {
-
-                        "Accept":
-                            "application/vnd.github+json",
-
-                        "Authorization":
-                            `Bearer ${this.token}`,
-
-                        "X-GitHub-Api-Version":
-                            "2026-03-10",
-
-                        "Content-Type":
-                            "application/json",
-
-                        ...(options.headers || {})
-                    }
+                    headers
                 }
             );
 
@@ -69,6 +82,7 @@ export class GitHubApi {
                     await response.json();
 
                 if (data.message) {
+
                     message =
                         data.message;
                 }
@@ -137,7 +151,9 @@ export class GitHubApi {
         };
 
         if (sha) {
-            body.sha = sha;
+
+            body.sha =
+                sha;
         }
 
         return await this.request(
@@ -145,7 +161,8 @@ export class GitHubApi {
             `/${encodeURIComponent(this.repository)}` +
             `/contents/${this.encodePath(path)}`,
             {
-                method: "PUT",
+                method:
+                    "PUT",
 
                 body:
                     JSON.stringify(body)
@@ -168,7 +185,8 @@ export class GitHubApi {
             `/${encodeURIComponent(this.repository)}` +
             `/contents/${this.encodePath(path)}`,
             {
-                method: "DELETE",
+                method:
+                    "DELETE",
 
                 body:
                     JSON.stringify({
@@ -219,7 +237,8 @@ export class GitHubApi {
         const bytes =
             Uint8Array.from(
                 binary,
-                char => char.charCodeAt(0)
+                char =>
+                    char.charCodeAt(0)
             );
 
         return new TextDecoder()
@@ -234,21 +253,6 @@ export class GitHubApi {
         files,
         message
     ) {
-
-        /*
-         * files:
-         *
-         * [
-         *     {
-         *         path: "data/recipe.json",
-         *         content: "..."
-         *     },
-         *     {
-         *         path: "data/index.json",
-         *         content: "..."
-         *     }
-         * ]
-         */
 
         if (
             !Array.isArray(files) ||

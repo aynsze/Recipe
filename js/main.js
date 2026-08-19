@@ -1,5 +1,5 @@
 // js/main.js
-// bk8
+// bk9
 // 全体を組み合わせるファイル
 
 import { RecipeList } from "./recipe-list.js";
@@ -480,7 +480,26 @@ function initializeApp(recipes) {
 
     addButton.addEventListener(
         "click",
-        () => recipeForm.open()
+        () => {
+
+            /*
+             * 閲覧は未ログインでも可能。
+             *
+             * ただしレシピ追加には
+             * GitHubログインが必要。
+             */
+
+            if (!isLoggedIn()) {
+
+                showNotice(
+                    "レシピを追加するにはGitHubにログインしてください"
+                );
+
+                return;
+            }
+
+            recipeForm.open();
+        }
     );
 }
 
@@ -509,7 +528,8 @@ async function loadApp() {
                 "recipeGrid"
             );
 
-        grid.innerHTML = "";
+        grid.innerHTML =
+            "";
 
         const message =
             document.getElementById(
@@ -530,14 +550,20 @@ async function loadApp() {
 
 async function main() {
 
-    setupGithubAuth(
-        loadApp
-    );
+    /*
+     * GitHub認証UIを初期化。
+     *
+     * 認証は閲覧には必要ない。
+     */
 
-    if (isLoggedIn()) {
+    setupGithubAuth();
 
-        await loadApp();
-    }
+    /*
+     * ログイン状態に関係なく
+     * レシピを読み込む。
+     */
+
+    await loadApp();
 }
 
 main();

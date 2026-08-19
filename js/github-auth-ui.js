@@ -1,5 +1,5 @@
 // js/github-auth-ui.js
-// bk3
+// bk4
 // GitHub認証UIを担当
 
 import {
@@ -13,7 +13,7 @@ import { showNotice } from "./notice.js";
    認証UI初期化
    ============================== */
 
-export function setupGithubAuth(onLogin) {
+export function setupGithubAuth() {
 
     const loginButton =
         document.getElementById(
@@ -159,10 +159,6 @@ export function setupGithubAuth(onLogin) {
             showNotice(
                 "ログインしました"
             );
-
-            if (onLogin) {
-                await onLogin();
-            }
 
         } catch (error) {
 

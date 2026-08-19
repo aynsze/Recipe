@@ -1,5 +1,5 @@
 // js/github-auth.js
-// bk1
+// bk2
 // GitHubログイン・ログアウトを管理
 
 import {
@@ -11,11 +11,12 @@ import {
 
 import { GitHubApi } from "./github-api.js";
 
+// ★自分のものに置換する
 const GITHUB_OWNER =
-    "あなたのowner";
+    "aynsze";
 
 const GITHUB_REPOSITORY =
-    "あなたのrepository";
+    "Recipe";
 
 const GITHUB_BRANCH =
     "main";
@@ -29,12 +30,14 @@ export function getGithubApi() {
     const token =
         getToken();
 
-    if (!token) {
-
-        throw new Error(
-            "GitHubにログインしていません"
-        );
-    }
+    /*
+     * トークンがなくても
+     * Publicリポジトリの読み込みには
+     * GitHub APIを使用できる。
+     *
+     * 書き込み時はGitHub API側で
+     * 認証が必要になる。
+     */
 
     return new GitHubApi({
 
@@ -44,7 +47,8 @@ export function getGithubApi() {
         repository:
             GITHUB_REPOSITORY,
 
-        token,
+        token:
+            token || null,
 
         branch:
             GITHUB_BRANCH

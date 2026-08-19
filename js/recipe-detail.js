@@ -1,5 +1,5 @@
 // js/recipe-detail.js
-// bk3
+// bk4
 // 詳細画面を担当
 
 import { RecipeForm } from "./recipe-form.js";
@@ -667,12 +667,20 @@ function setupEditForm() {
         });
 
     /* 編集ボタン */
-
     document.getElementById(
         "editButton"
     ).addEventListener(
         "click",
         () => {
+
+            if (!isLoggedIn()) {
+
+                showNotice(
+                    "レシピを編集するにはGitHubにログインしてください"
+                );
+
+                return;
+            }
 
             recipeForm.open(recipe);
         }
@@ -850,14 +858,20 @@ async function loadRecipeApp() {
 
 async function main() {
 
-    setupGithubAuth(
-        loadRecipeApp
-    );
+    /*
+     * GitHub認証UIを初期化。
+     *
+     * 認証は閲覧には必要ない。
+     */
 
-    if (isLoggedIn()) {
+    setupGithubAuth();
 
-        await loadRecipeApp();
-    }
+    /*
+     * ログイン状態に関係なく
+     * レシピを読み込む。
+     */
+
+    await loadRecipeApp();
 }
 
 /* ==============================
