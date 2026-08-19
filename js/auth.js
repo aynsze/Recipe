@@ -2,10 +2,8 @@
 // bk2
 // GitHub認証情報を管理
 
-
 const TOKEN_KEY =
     "github-token";
-
 
 /* ==============================
    PATを設定
@@ -15,7 +13,6 @@ export function setToken(token) {
 
     const value =
         token?.trim() || "";
-
 
     if (value) {
 
@@ -32,7 +29,6 @@ export function setToken(token) {
     }
 }
 
-
 /* ==============================
    PATを取得
    ============================== */
@@ -44,7 +40,6 @@ export function getToken() {
     );
 }
 
-
 /* ==============================
    PATを破棄
    ============================== */
@@ -55,7 +50,6 @@ export function clearToken() {
         TOKEN_KEY
     );
 }
-
 
 /* ==============================
    PATが設定されているか

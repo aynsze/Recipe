@@ -19,7 +19,6 @@ const UNIT_OPTIONS = [
     "少々"
 ];
 
-
 const GROUP_OPTIONS = [
     "",
     "A",
@@ -27,7 +26,6 @@ const GROUP_OPTIONS = [
     "C",
     "D"
 ];
-
 
 export class RecipeForm {
 
@@ -99,7 +97,6 @@ export class RecipeForm {
         this.setupEvents();
     }
 
-
     /* ==============================
        イベント
        ============================== */
@@ -111,43 +108,36 @@ export class RecipeForm {
             () => this.close()
         );
 
-
         this.modalBackground.addEventListener(
             "click",
             () => this.close()
         );
-
 
         this.ratingInput.addEventListener(
             "input",
             () => this.updateRating()
         );
 
-
         this.addIngredientButton.addEventListener(
             "click",
             () => this.addIngredientRow()
         );
-
 
         this.addPreparationButton.addEventListener(
             "click",
             () => this.addPreparationRow()
         );
 
-
         this.addStepButton.addEventListener(
             "click",
             () => this.addStepRow()
         );
-
 
         this.saveButton.addEventListener(
             "click",
             () => this.save()
         );
     }
-
 
     /* ==============================
        開く
@@ -159,7 +149,6 @@ export class RecipeForm {
             recipe
                 ? structuredClone(recipe)
                 : null;
-
 
         if (recipe) {
 
@@ -176,27 +165,22 @@ export class RecipeForm {
             this.setFileNameMode(true);
         }
 
-
         this.modal.classList.add("open");
 
         this.modalBackground.classList.add(
             "open"
         );
 
-
         this.modal.setAttribute(
             "aria-hidden",
             "false"
         );
 
-
         document.body.style.overflow =
             "hidden";
 
-
         this.titleInput.focus();
     }
-
 
     /* ==============================
        ファイル名入力欄の表示
@@ -209,16 +193,13 @@ export class RecipeForm {
                 ".file-name-field"
             );
 
-
         if (!wrapper) {
             return;
         }
 
-
         wrapper.style.display =
             isNew ? "" : "none";
     }
-
 
     /* ==============================
        閉じる
@@ -234,21 +215,17 @@ export class RecipeForm {
             "open"
         );
 
-
         this.modal.setAttribute(
             "aria-hidden",
             "true"
         );
 
-
         document.body.style.overflow =
             "";
-
 
         this.editingRecipe =
             null;
     }
-
 
     /* ==============================
        新規フォーム
@@ -259,7 +236,6 @@ export class RecipeForm {
         this.titleInput.value = "";
 
         this.fileNameInput.value = "";
-
 
         this.categoryInput.value =
             "主食";
@@ -279,7 +255,6 @@ export class RecipeForm {
 
         this.memoInput.value = "";
 
-
         this.ingredientsContainer.innerHTML =
             "";
 
@@ -289,12 +264,10 @@ export class RecipeForm {
         this.stepsContainer.innerHTML =
             "";
 
-
         this.addIngredientRow();
         this.addPreparationRow();
         this.addStepRow();
     }
-
 
     /* ==============================
        編集対象をフォームに読み込む
@@ -305,33 +278,25 @@ export class RecipeForm {
         this.titleInput.value =
             recipe.title || "";
 
-
         this.categoryInput.value =
             recipe.category || "他";
-
 
         this.sourceInput.value =
             recipe.source || "original";
 
-
         this.ratingInput.value =
             Number(recipe.rating) || 0;
 
-
         this.updateRating();
-
 
         this.imageInput.value =
             recipe.image || "";
 
-
         this.urlInput.value =
             recipe.url || "";
 
-
         this.memoInput.value =
             recipe.memo || "";
-
 
         this.ingredientsContainer.innerHTML =
             "";
@@ -342,14 +307,12 @@ export class RecipeForm {
         this.stepsContainer.innerHTML =
             "";
 
-
         /* 材料 */
 
         const ingredients =
             Array.isArray(recipe.ingredients)
                 ? recipe.ingredients
                 : [];
-
 
         ingredients.forEach(
             ingredient => {
@@ -360,9 +323,7 @@ export class RecipeForm {
             }
         );
 
-
         this.addIngredientRow();
-
 
         /* 事前準備 */
 
@@ -370,7 +331,6 @@ export class RecipeForm {
             Array.isArray(recipe.preparation)
                 ? recipe.preparation
                 : [];
-
 
         preparation.forEach(
             text => {
@@ -381,9 +341,7 @@ export class RecipeForm {
             }
         );
 
-
         this.addPreparationRow();
-
 
         /* 手順 */
 
@@ -391,7 +349,6 @@ export class RecipeForm {
             Array.isArray(recipe.steps)
                 ? recipe.steps
                 : [];
-
 
         steps.forEach(
             text => {
@@ -402,10 +359,8 @@ export class RecipeForm {
             }
         );
 
-
         this.addStepRow();
     }
-
 
     /* ==============================
        評価
@@ -418,13 +373,11 @@ export class RecipeForm {
                 this.ratingInput.value
             );
 
-
         this.ratingValue.textContent =
             value === 0
                 ? "未設定"
                 : value;
     }
-
 
     /* ==============================
        select作成
@@ -440,10 +393,8 @@ export class RecipeForm {
                 "select"
             );
 
-
         select.className =
             className;
-
 
         options.forEach(option => {
 
@@ -452,26 +403,21 @@ export class RecipeForm {
                     "option"
                 );
 
-
             element.value =
                 option;
-
 
             element.textContent =
                 option === ""
                     ? "-"
                     : option;
 
-
             select.appendChild(
                 element
             );
         });
 
-
         return select;
     }
-
 
     /* ==============================
        材料行
@@ -484,10 +430,8 @@ export class RecipeForm {
                 "div"
             );
 
-
         row.className =
             "ingredient-row";
-
 
         const group =
             this.createSelect(
@@ -495,16 +439,13 @@ export class RecipeForm {
                 "ingredient-group"
             );
 
-
         group.value =
             data.group || "";
-
 
         const name =
             document.createElement(
                 "input"
             );
-
 
         name.type =
             "text";
@@ -518,12 +459,10 @@ export class RecipeForm {
         name.value =
             data.name || "";
 
-
         const amount =
             document.createElement(
                 "input"
             );
-
 
         amount.type =
             "text";
@@ -534,7 +473,6 @@ export class RecipeForm {
         amount.placeholder =
             "量";
 
-
         if (
             data.amount !== undefined &&
             data.amount !== null
@@ -544,23 +482,19 @@ export class RecipeForm {
                 data.amount;
         }
 
-
         const unit =
             this.createSelect(
                 UNIT_OPTIONS,
                 "ingredient-unit"
             );
 
-
         unit.value =
             data.unit || "g";
-
 
         const remove =
             document.createElement(
                 "button"
             );
-
 
         remove.type =
             "button";
@@ -571,12 +505,10 @@ export class RecipeForm {
         remove.textContent =
             "×";
 
-
         remove.addEventListener(
             "click",
             () => row.remove()
         );
-
 
         row.appendChild(group);
         row.appendChild(name);
@@ -584,11 +516,9 @@ export class RecipeForm {
         row.appendChild(unit);
         row.appendChild(remove);
 
-
         this.ingredientsContainer
             .appendChild(row);
     }
-
 
     /* ==============================
        事前準備行
@@ -601,26 +531,21 @@ export class RecipeForm {
                 "div"
             );
 
-
         row.className =
             "preparation-row";
-
 
         const number =
             document.createElement(
                 "div"
             );
 
-
         number.className =
             "step-number";
-
 
         const input =
             document.createElement(
                 "textarea"
             );
-
 
         input.className =
             "preparation-input";
@@ -631,12 +556,10 @@ export class RecipeForm {
         input.value =
             value;
 
-
         const remove =
             document.createElement(
                 "button"
             );
-
 
         remove.type =
             "button";
@@ -646,7 +569,6 @@ export class RecipeForm {
 
         remove.textContent =
             "×";
-
 
         remove.addEventListener(
             "click",
@@ -658,19 +580,15 @@ export class RecipeForm {
             }
         );
 
-
         row.appendChild(number);
         row.appendChild(input);
         row.appendChild(remove);
 
-
         this.preparationContainer
             .appendChild(row);
 
-
         this.updatePreparationNumbers();
     }
-
 
     /* ==============================
        手順行
@@ -683,26 +601,21 @@ export class RecipeForm {
                 "div"
             );
 
-
         row.className =
             "step-row";
-
 
         const number =
             document.createElement(
                 "div"
             );
 
-
         number.className =
             "step-number";
-
 
         const input =
             document.createElement(
                 "textarea"
             );
-
 
         input.className =
             "step-input";
@@ -713,12 +626,10 @@ export class RecipeForm {
         input.value =
             value;
 
-
         const remove =
             document.createElement(
                 "button"
             );
-
 
         remove.type =
             "button";
@@ -728,7 +639,6 @@ export class RecipeForm {
 
         remove.textContent =
             "×";
-
 
         remove.addEventListener(
             "click",
@@ -740,19 +650,15 @@ export class RecipeForm {
             }
         );
 
-
         row.appendChild(number);
         row.appendChild(input);
         row.appendChild(remove);
 
-
         this.stepsContainer
             .appendChild(row);
 
-
         this.updateStepNumbers();
     }
-
 
     /* ==============================
        番号
@@ -766,7 +672,6 @@ export class RecipeForm {
                     ".preparation-row"
                 );
 
-
         rows.forEach(
             (row, index) => {
 
@@ -777,7 +682,6 @@ export class RecipeForm {
             }
         );
     }
-
 
     updateStepNumbers() {
 
@@ -787,7 +691,6 @@ export class RecipeForm {
                     ".step-row"
                 );
 
-
         rows.forEach(
             (row, index) => {
 
@@ -799,7 +702,6 @@ export class RecipeForm {
         );
     }
 
-
     /* ==============================
        材料取得
        ============================== */
@@ -808,13 +710,11 @@ export class RecipeForm {
 
         const ingredients = [];
 
-
         const rows =
             this.ingredientsContainer
                 .querySelectorAll(
                     ".ingredient-row"
                 );
-
 
         rows.forEach(row => {
 
@@ -825,17 +725,14 @@ export class RecipeForm {
                     .value
                     .trim();
 
-
             if (!name) {
                 return;
             }
-
 
             const group =
                 row.querySelector(
                     ".ingredient-group"
                 ).value;
-
 
             const amountValue =
                 row.querySelector(
@@ -844,16 +741,13 @@ export class RecipeForm {
                     .value
                     .trim();
 
-
             const unit =
                 row.querySelector(
                     ".ingredient-unit"
                 ).value;
 
-
             let amount =
                 amountValue;
-
 
             if (
                 amountValue !== "" &&
@@ -865,7 +759,6 @@ export class RecipeForm {
                 amount =
                     Number(amountValue);
             }
-
 
             ingredients.push({
 
@@ -881,10 +774,8 @@ export class RecipeForm {
             });
         });
 
-
         return ingredients;
     }
-
 
     /* ==============================
        事前準備取得
@@ -894,13 +785,11 @@ export class RecipeForm {
 
         const preparation = [];
 
-
         const rows =
             this.preparationContainer
                 .querySelectorAll(
                     ".preparation-row"
                 );
-
 
         rows.forEach(row => {
 
@@ -911,16 +800,13 @@ export class RecipeForm {
                     .value
                     .trim();
 
-
             if (value) {
                 preparation.push(value);
             }
         });
 
-
         return preparation;
     }
-
 
     /* ==============================
        手順取得
@@ -930,13 +816,11 @@ export class RecipeForm {
 
         const steps = [];
 
-
         const rows =
             this.stepsContainer
                 .querySelectorAll(
                     ".step-row"
                 );
-
 
         rows.forEach(row => {
 
@@ -947,16 +831,13 @@ export class RecipeForm {
                     .value
                     .trim();
 
-
             if (value) {
                 steps.push(value);
             }
         });
 
-
         return steps;
     }
-
 
     /* ==============================
        レシピJSON作成
@@ -1000,7 +881,6 @@ export class RecipeForm {
         };
     }
 
-
     /* ==============================
        ファイル名
        ============================== */
@@ -1009,7 +889,6 @@ export class RecipeForm {
 
         let fileName =
             this.fileNameInput.value.trim();
-
 
         /*
          * ファイル名が空欄の場合は
@@ -1021,7 +900,6 @@ export class RecipeForm {
             fileName =
                 this.titleInput.value.trim();
         }
-
 
         /*
          * パスとして解釈される文字を禁止。
@@ -1043,7 +921,6 @@ export class RecipeForm {
             return null;
         }
 
-
         /*
          * .jsonが付いていなければ追加
          */
@@ -1057,10 +934,8 @@ export class RecipeForm {
             fileName += ".json";
         }
 
-
         return fileName;
     }
-
 
     /* ==============================
        保存
@@ -1070,7 +945,6 @@ export class RecipeForm {
 
         const recipe =
             this.getRecipe();
-
 
         if (!recipe.title) {
 
@@ -1083,9 +957,7 @@ export class RecipeForm {
             return;
         }
 
-
         let fileName = null;
-
 
         /*
          * 新規追加の場合のみ
@@ -1100,7 +972,6 @@ export class RecipeForm {
             fileName =
                 this.getFileName();
 
-
             /*
              * 使用できない文字が
              * 含まれていた場合
@@ -1111,7 +982,6 @@ export class RecipeForm {
             }
         }
 
-
         if (this.onSave) {
 
             const saved =
@@ -1120,7 +990,6 @@ export class RecipeForm {
                     this.editingRecipe,
                     fileName
                 );
-
 
             /*
              * falseが返された場合は
@@ -1132,10 +1001,8 @@ export class RecipeForm {
             }
         }
 
-
         this.close();
     }
-
 
     /* ==============================
        保存処理を登録

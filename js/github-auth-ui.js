@@ -2,14 +2,12 @@
 // bk3
 // GitHub認証UIを担当
 
-
 import {
     login,
     isLoggedIn
 } from "./github-auth.js";
 
 import { showNotice } from "./notice.js";
-
 
 /* ==============================
    認証UI初期化
@@ -47,7 +45,6 @@ export function setupGithubAuth(onLogin) {
             "githubPatInput"
         );
 
-
     if (
         !loginButton ||
         !modal ||
@@ -63,7 +60,6 @@ export function setupGithubAuth(onLogin) {
 
         return;
     }
-
 
     /* ==============================
        状態表示
@@ -89,7 +85,6 @@ export function setupGithubAuth(onLogin) {
         }
     }
 
-
     /* ==============================
        モーダルを開く
        ============================== */
@@ -107,7 +102,6 @@ export function setupGithubAuth(onLogin) {
         patInput.focus();
     }
 
-
     /* ==============================
        モーダルを閉じる
        ============================== */
@@ -123,7 +117,6 @@ export function setupGithubAuth(onLogin) {
         patInput.value = "";
     }
 
-
     /* ==============================
        ログイン
        ============================== */
@@ -132,7 +125,6 @@ export function setupGithubAuth(onLogin) {
 
         const token =
             patInput.value.trim();
-
 
         if (!token) {
 
@@ -143,10 +135,8 @@ export function setupGithubAuth(onLogin) {
             return;
         }
 
-
         submitButton.disabled =
             true;
-
 
         const notice =
             showNotice(
@@ -156,18 +146,15 @@ export function setupGithubAuth(onLogin) {
                 }
             );
 
-
         try {
 
             await login(token);
-
 
             notice.close();
 
             closeModal();
 
             updateStatus();
-
 
             showNotice(
                 "ログインしました"
@@ -181,17 +168,14 @@ export function setupGithubAuth(onLogin) {
 
             notice.close();
 
-
             console.error(
                 "GitHubログイン失敗:",
                 error
             );
 
-
             showNotice(
                 `ログインに失敗しました: ${error.message}`
             );
-
 
         } finally {
 
@@ -199,7 +183,6 @@ export function setupGithubAuth(onLogin) {
                 false;
         }
     }
-
 
     /* ==============================
        イベント
@@ -210,24 +193,20 @@ export function setupGithubAuth(onLogin) {
         openModal
     );
 
-
     cancelButton.addEventListener(
         "click",
         closeModal
     );
-
 
     modalBackground.addEventListener(
         "click",
         closeModal
     );
 
-
     submitButton.addEventListener(
         "click",
         handleLogin
     );
-
 
     patInput.addEventListener(
         "keydown",
@@ -239,7 +218,6 @@ export function setupGithubAuth(onLogin) {
             }
         }
     );
-
 
     /* ==============================
        初期状態

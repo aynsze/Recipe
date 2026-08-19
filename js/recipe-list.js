@@ -2,7 +2,6 @@
 // bk2
 // 一覧表示・検索・カテゴリ・並び替えを担当
 
-
 const CATEGORY_ORDER = [
     "主食",
     "肉類",
@@ -12,13 +11,11 @@ const CATEGORY_ORDER = [
     "他"
 ];
 
-
 const SOURCE_LABELS = {
     original: "自作",
     arranged: "アレンジ",
     reference: "参考"
 };
-
 
 /**
  * レシピ一覧を管理するクラス
@@ -52,13 +49,11 @@ export class RecipeList {
         this.onRecipeClick =
             onRecipeClick;
 
-
         this.recipes = [];
 
         this.selectedCategory =
             "すべて";
     }
-
 
     /**
      * 初期化
@@ -70,14 +65,12 @@ export class RecipeList {
 
         this.createCategoryButtons();
 
-
         this.searchInput.addEventListener(
             "input",
             () => {
                 this.render();
             }
         );
-
 
         this.sortSelect.addEventListener(
             "change",
@@ -86,10 +79,8 @@ export class RecipeList {
             }
         );
 
-
         this.render();
     }
-
 
     /**
      * レシピを一覧に追加
@@ -104,7 +95,6 @@ export class RecipeList {
         this.render();
     }
 
-
     /**
      * カテゴリボタンを作成
      */
@@ -113,12 +103,10 @@ export class RecipeList {
         this.categoryListElement.innerHTML =
             "";
 
-
         const categories = [
             "すべて",
             ...CATEGORY_ORDER
         ];
-
 
         categories.forEach(category => {
 
@@ -131,7 +119,6 @@ export class RecipeList {
             button.className =
                 "category-button";
 
-
             if (
                 category ===
                 this.selectedCategory
@@ -142,10 +129,8 @@ export class RecipeList {
                 );
             }
 
-
             button.textContent =
                 category;
-
 
             button.addEventListener(
                 "click",
@@ -160,13 +145,11 @@ export class RecipeList {
                 }
             );
 
-
             this.categoryListElement.appendChild(
                 button
             );
         });
     }
-
 
     /**
      * 検索・カテゴリで絞り込む
@@ -177,7 +160,6 @@ export class RecipeList {
             this.searchInput.value
                 .trim()
                 .toLowerCase();
-
 
         return this.recipes.filter(
             recipe => {
@@ -197,7 +179,6 @@ export class RecipeList {
                     return false;
                 }
 
-
                 // ------------------------------
                 // キーワード
                 // ------------------------------
@@ -205,7 +186,6 @@ export class RecipeList {
                 if (!keyword) {
                     return true;
                 }
-
 
                 const ingredientText =
                     (recipe.ingredients || [])
@@ -215,16 +195,13 @@ export class RecipeList {
                         )
                         .join(" ");
 
-
                 const preparationText =
                     (recipe.preparation || [])
                         .join(" ");
 
-
                 const stepsText =
                     (recipe.steps || [])
                         .join(" ");
-
 
                 const searchableText = [
 
@@ -244,14 +221,12 @@ export class RecipeList {
                     .join(" ")
                     .toLowerCase();
 
-
                 return searchableText.includes(
                     keyword
                 );
             }
         );
     }
-
 
     /**
      * 並び替え
@@ -261,9 +236,7 @@ export class RecipeList {
         const sorted =
             [...recipes];
 
-
         switch (this.sortSelect.value) {
-
 
             // ------------------------------
             // 評価順
@@ -279,7 +252,6 @@ export class RecipeList {
                     const ratingB =
                         Number(b.rating) || 0;
 
-
                     if (
                         ratingA !== ratingB
                     ) {
@@ -289,7 +261,6 @@ export class RecipeList {
                             ratingA
                         );
                     }
-
 
                     return (
                         this.categoryOrder(
@@ -304,7 +275,6 @@ export class RecipeList {
 
                 break;
 
-
             // ------------------------------
             // 新しい順
             // ------------------------------
@@ -317,7 +287,6 @@ export class RecipeList {
 
                 break;
 
-
             // ------------------------------
             // 古い順
             // ------------------------------
@@ -327,7 +296,6 @@ export class RecipeList {
                 // index.jsonの並びを
                 // そのまま使用
                 break;
-
 
             // ------------------------------
             // カテゴリ順
@@ -348,7 +316,6 @@ export class RecipeList {
                             b.category
                         );
 
-
                     if (
                         categoryA !==
                         categoryB
@@ -360,7 +327,6 @@ export class RecipeList {
                         );
                     }
 
-
                     return (
                         (Number(a.rating) || 0)
                         -
@@ -371,10 +337,8 @@ export class RecipeList {
                 break;
         }
 
-
         return sorted;
     }
-
 
     /**
      * カテゴリの並び順
@@ -386,12 +350,10 @@ export class RecipeList {
                 category
             );
 
-
         return index === -1
             ? CATEGORY_ORDER.length
             : index;
     }
-
 
     /**
      * 一覧を表示
@@ -401,22 +363,18 @@ export class RecipeList {
         const filtered =
             this.getFilteredRecipes();
 
-
         const sorted =
             this.sortRecipes(
                 filtered
             );
 
-
         this.gridElement.innerHTML =
             "";
-
 
         this.emptyMessageElement.style.display =
             sorted.length === 0
                 ? "block"
                 : "none";
-
 
         sorted.forEach(recipe => {
 
@@ -429,7 +387,6 @@ export class RecipeList {
         });
     }
 
-
     /**
      * レシピカードを作成
      */
@@ -440,10 +397,8 @@ export class RecipeList {
                 "article"
             );
 
-
         card.className =
             "recipe-card";
-
 
         card.addEventListener(
             "click",
@@ -458,7 +413,6 @@ export class RecipeList {
             }
         );
 
-
         // ==============================
         // 画像
         // ==============================
@@ -468,10 +422,8 @@ export class RecipeList {
                 "div"
             );
 
-
         imageWrap.className =
             "recipe-image-wrap";
-
 
         if (
             typeof recipe.image ===
@@ -485,23 +437,18 @@ export class RecipeList {
                     "img"
                 );
 
-
             image.className =
                 "recipe-image";
 
-
             image.src =
                 recipe.image;
-
 
             image.alt =
                 recipe.title ||
                 "レシピ画像";
 
-
             image.loading =
                 "lazy";
-
 
             image.addEventListener(
                 "error",
@@ -509,27 +456,22 @@ export class RecipeList {
 
                     image.remove();
 
-
                     const noImage =
                         document.createElement(
                             "div"
                         );
 
-
                     noImage.className =
                         "no-image";
 
-
                     noImage.textContent =
                         "🍽";
-
 
                     imageWrap.prepend(
                         noImage
                     );
                 }
             );
-
 
             imageWrap.appendChild(
                 image
@@ -542,20 +484,16 @@ export class RecipeList {
                     "div"
                 );
 
-
             noImage.className =
                 "no-image";
 
-
             noImage.textContent =
                 "🍽";
-
 
             imageWrap.appendChild(
                 noImage
             );
         }
-
 
         // ==============================
         // 評価
@@ -564,7 +502,6 @@ export class RecipeList {
         const rating =
             Number(recipe.rating) || 0;
 
-
         if (rating > 0) {
 
             const ratingElement =
@@ -572,20 +509,16 @@ export class RecipeList {
                     "div"
                 );
 
-
             ratingElement.className =
                 "recipe-rating";
 
-
             ratingElement.textContent =
                 `★ ${rating}`;
-
 
             imageWrap.appendChild(
                 ratingElement
             );
         }
-
 
         // ==============================
         // 情報
@@ -596,10 +529,8 @@ export class RecipeList {
                 "div"
             );
 
-
         info.className =
             "recipe-info";
-
 
         // ------------------------------
         // タイトル
@@ -610,19 +541,15 @@ export class RecipeList {
                 "h2"
             );
 
-
         title.className =
             "recipe-title";
-
 
         title.textContent =
             recipe.title || "";
 
-
         info.appendChild(
             title
         );
-
 
         // ------------------------------
         // メタ情報
@@ -633,55 +560,44 @@ export class RecipeList {
                 "div"
             );
 
-
         meta.className =
             "recipe-meta";
-
 
         const source =
             document.createElement(
                 "span"
             );
 
-
         source.className =
             "recipe-source";
-
 
         source.textContent =
             SOURCE_LABELS[
             recipe.source
             ] || "";
 
-
         const category =
             document.createElement(
                 "span"
             );
 
-
         category.className =
             "recipe-category";
 
-
         category.textContent =
             recipe.category || "";
-
 
         meta.appendChild(
             source
         );
 
-
         meta.appendChild(
             category
         );
 
-
         info.appendChild(
             meta
         );
-
 
         // ==============================
         // カード完成
@@ -691,11 +607,9 @@ export class RecipeList {
             imageWrap
         );
 
-
         card.appendChild(
             info
         );
-
 
         return card;
     }

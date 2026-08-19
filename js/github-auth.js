@@ -2,7 +2,6 @@
 // bk1
 // GitHubログイン・ログアウトを管理
 
-
 import {
     setToken,
     getToken,
@@ -11,7 +10,6 @@ import {
 } from "./auth.js";
 
 import { GitHubApi } from "./github-api.js";
-
 
 const GITHUB_OWNER =
     "あなたのowner";
@@ -22,7 +20,6 @@ const GITHUB_REPOSITORY =
 const GITHUB_BRANCH =
     "main";
 
-
 /* ==============================
    GitHub API取得
    ============================== */
@@ -32,14 +29,12 @@ export function getGithubApi() {
     const token =
         getToken();
 
-
     if (!token) {
 
         throw new Error(
             "GitHubにログインしていません"
         );
     }
-
 
     return new GitHubApi({
 
@@ -56,7 +51,6 @@ export function getGithubApi() {
     });
 }
 
-
 /* ==============================
    ログイン
    ============================== */
@@ -66,14 +60,12 @@ export async function login(token) {
     const newToken =
         token?.trim();
 
-
     if (!newToken) {
 
         throw new Error(
             "PATを入力してください"
         );
     }
-
 
     const api =
         new GitHubApi({
@@ -91,7 +83,6 @@ export async function login(token) {
                 GITHUB_BRANCH
         });
 
-
     /*
      * GitHub APIへアクセスして
      * PATが有効か確認する。
@@ -102,14 +93,12 @@ export async function login(token) {
         `/${encodeURIComponent(GITHUB_REPOSITORY)}`
     );
 
-
     /*
      * 認証成功後に保存する。
      */
 
     setToken(newToken);
 }
-
 
 /* ==============================
    ログアウト
@@ -119,7 +108,6 @@ export function logout() {
 
     clearToken();
 }
-
 
 /* ==============================
    ログイン状態
