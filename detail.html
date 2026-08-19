@@ -1,6 +1,6 @@
 <!-- detail.html -->
-<!-- bk1 -->
-<!-- -->
+<!-- bk2 -->
+<!-- レシピ詳細 -->
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -29,19 +29,12 @@
             <button id="githubLoginButton" class="github-login-button" type="button">
                 ログイン
             </button>
-
         </div>
-
-        <div class="header-space"></div>
-
     </header>
 
     <main class="detail-main">
 
-        <!-- ==============================
-             画像
-             ============================== -->
-
+        <!-- 画像 -->
         <div id="imageWrap" class="detail-image-wrap">
             <img id="recipeImage" class="detail-image" alt="">
 
@@ -50,10 +43,7 @@
             </div>
         </div>
 
-        <!-- ==============================
-             基本情報
-             ============================== -->
-
+        <!-- 基本情報 -->
         <section class="detail-intro">
 
             <h2 id="recipeTitle" class="detail-title"></h2>
@@ -64,15 +54,14 @@
 
         </section>
 
-        <!-- ==============================
-             材料
-             ============================== -->
-
+        <!-- 材料 -->
         <section class="detail-section">
 
             <div class="detail-section-heading">
 
                 <h2>材料</h2>
+
+                <p id="servingNote" class="serving-note"></p>
 
                 <select id="servingSelect">
                     <option value="1">基本</option>
@@ -83,16 +72,11 @@
 
             </div>
 
-            <p id="servingNote" class="serving-note"></p>
-
             <div id="ingredients" class="ingredients-list"></div>
 
         </section>
 
-        <!-- ==============================
-             事前準備
-             ============================== -->
-
+        <!-- 事前準備 -->
         <section id="preparationSection" class="detail-section">
 
             <h2>事前準備</h2>
@@ -101,10 +85,7 @@
 
         </section>
 
-        <!-- ==============================
-             手順
-             ============================== -->
-
+        <!-- 手順 -->
         <section class="detail-section">
 
             <h2>手順</h2>
@@ -113,10 +94,7 @@
 
         </section>
 
-        <!-- ==============================
-             メモ
-             ============================== -->
-
+        <!-- メモ -->
         <section id="memoSection" class="detail-section">
 
             <h2>メモ</h2>
@@ -132,10 +110,7 @@
         ✎
     </button>
 
-    <!-- ==============================
-         編集モーダル
-         ============================== -->
-
+    <!-- 編集モーダル -->
     <div id="modalBackground" class="modal-background"></div>
 
     <section id="recipeModal" class="recipe-modal" aria-hidden="true">
@@ -157,7 +132,6 @@
         <div class="modal-content">
 
             <!-- 基本情報 -->
-
             <section class="form-section">
 
                 <div class="form-field">
@@ -246,7 +220,6 @@
             </section>
 
             <!-- 材料 -->
-
             <section class="form-section">
 
                 <div class="section-heading">
@@ -264,7 +237,6 @@
             </section>
 
             <!-- 事前準備 -->
-
             <section class="form-section">
 
                 <div class="section-heading">
@@ -282,7 +254,6 @@
             </section>
 
             <!-- 手順 -->
-
             <section class="form-section">
 
                 <div class="section-heading">
@@ -300,7 +271,6 @@
             </section>
 
             <!-- メモ -->
-
             <section class="form-section">
 
                 <div class="section-heading">

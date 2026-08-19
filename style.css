@@ -554,10 +554,11 @@ main {
     z-index: 10;
     height: 52px;
     display: grid;
-    grid-template-columns: 50px 1fr 50px;
+    grid-template-columns: 100px 1fr 88px;
     align-items: center;
     border-bottom: 1px solid #e5e5e5;
     background: rgba(255, 255, 255, 0.95);
+    padding-right: 12px;
 }
 
 .detail-header h1 {
@@ -583,7 +584,7 @@ main {
 .detail-main {
     max-width: 720px;
     margin: 10px auto;
-    padding-bottom: 100px;
+    padding-bottom: 200px;
 }
 
 .detail-image-wrap {
@@ -610,7 +611,7 @@ main {
 }
 
 .detail-intro {
-    padding: 16px;
+    padding: 16px 0;
 }
 
 .detail-title {
@@ -660,34 +661,34 @@ main {
 
 .detail-section {
     margin-top: 26px;
-    padding: 0 16px;
-}
-
-.detail-section h2 {
-    margin: 0 0 10px;
-    font-size: 18px;
 }
 
 .detail-section-heading {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 10px;
 }
 
+.detail-section h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.serving-note {
+    margin: 0 2px -6px;
+    color: #888;
+    font-size: 12px;
+    flex: 1;
+}
+
 .detail-section-heading select {
-    height: 34px;
+    flex-shrink: 0;
+    height: 30px;
     padding: 0 8px;
     border: 1px solid #ddd;
     border-radius: 7px;
     background: #fff;
     font-size: 13px;
-}
-
-.serving-note {
-    margin: -3px 0 7px;
-    color: #888;
-    font-size: 12px;
 }
 
 /* ==============================
@@ -699,6 +700,7 @@ main {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     background: #fff;
+    margin-top: 5px;
 }
 
 .ingredient-item {
@@ -730,14 +732,14 @@ main {
 .ingredient-name {
     min-width: 0;
     border-right: 1px solid #e5e5e5;
-    font-size: 14px;
+    font-size: 15px;
     overflow-wrap: anywhere;
 }
 
 .ingredient-amount {
     justify-content: flex-end;
     text-align: right;
-    font-size: 13px;
+    font-size: 15px;
     white-space: nowrap;
 }
 
@@ -765,14 +767,11 @@ main {
 
 .instruction-list {
     margin: 0;
-    padding-left: 28px;
+    padding-left: 26px;
 }
 
 .instruction-list li {
-    margin-bottom: 8px;
-    padding: 7px 8px;
-    border-radius: 7px;
-    line-height: 1.6;
+    padding: 4px 8px;
     overflow-wrap: anywhere;
 }
 
