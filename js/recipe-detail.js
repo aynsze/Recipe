@@ -1,5 +1,5 @@
 // js/recipe-detail.js
-// bk4
+// bk5
 // 詳細画面を担当
 
 import { RecipeForm } from "./recipe-form.js";
@@ -210,6 +210,7 @@ function renderUrl() {
         !recipe.url ||
         !recipe.url.trim()
     ) {
+
         area.style.display =
             "none";
 
@@ -232,27 +233,11 @@ function renderUrl() {
         "noopener noreferrer";
 
     link.textContent =
-        recipe.url;
+        `🔗 ${recipe.url}`;
 
-    area.appendChild(link);
-
-    try {
-
-        const domain =
-            document.createElement("div");
-
-        domain.className =
-            "detail-url-domain";
-
-        domain.textContent =
-            new URL(recipe.url)
-                .hostname;
-
-        area.appendChild(domain);
-
-    } catch {
-        // 不正なURLの場合はドメインを表示しない
-    }
+    area.appendChild(
+        link
+    );
 }
 
 /* ==============================

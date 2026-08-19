@@ -638,9 +638,8 @@ main {
 
 .detail-url a {
     display: block;
-    color: #555;
+    color: #0077cc;
     font-size: 13px;
-    line-height: 1.5;
     word-break: break-all;
     text-decoration: none;
 }
@@ -649,18 +648,12 @@ main {
     text-decoration: underline;
 }
 
-.detail-url-domain {
-    margin-top: 2px;
-    color: #999;
-    font-size: 11px;
-}
-
 /* ==============================
    詳細セクション
    ============================== */
 
 .detail-section {
-    margin-top: 26px;
+    margin-top: 10px;
 }
 
 .detail-section-heading {
@@ -766,8 +759,8 @@ main {
    ============================== */
 
 .instruction-list {
-    margin: 0;
-    padding-left: 26px;
+    margin: 5px 0;
+    padding-left: 34px;
 }
 
 .instruction-list li {
