@@ -1,5 +1,5 @@
 // js/recipe-list.js
-// bk2
+// bk3
 // 一覧表示・検索・カテゴリ・並び替えを担当
 
 const CATEGORY_ORDER = [
@@ -519,6 +519,52 @@ export class RecipeList {
                 ratingElement
             );
         }
+        
+        // ==============================
+        // カテゴリ
+        // ==============================
+
+        if (recipe.category) {
+
+            const category =
+                document.createElement(
+                    "div"
+                );
+
+            category.className =
+                "recipe-category";
+
+            category.textContent =
+                recipe.category;
+
+            imageWrap.appendChild(
+                category
+            );
+        }
+
+        // ==============================
+        // 出典
+        // ==============================
+
+        if (recipe.source) {
+
+            const source =
+                document.createElement(
+                    "div"
+                );
+
+            source.className =
+                "recipe-source";
+
+            source.textContent =
+                SOURCE_LABELS[
+                    recipe.source
+                ] || "";
+
+            imageWrap.appendChild(
+                source
+            );
+        }
 
         // ==============================
         // 情報
@@ -549,54 +595,6 @@ export class RecipeList {
 
         info.appendChild(
             title
-        );
-
-        // ------------------------------
-        // メタ情報
-        // ------------------------------
-
-        const meta =
-            document.createElement(
-                "div"
-            );
-
-        meta.className =
-            "recipe-meta";
-
-        const source =
-            document.createElement(
-                "span"
-            );
-
-        source.className =
-            "recipe-source";
-
-        source.textContent =
-            SOURCE_LABELS[
-            recipe.source
-            ] || "";
-
-        const category =
-            document.createElement(
-                "span"
-            );
-
-        category.className =
-            "recipe-category";
-
-        category.textContent =
-            recipe.category || "";
-
-        meta.appendChild(
-            source
-        );
-
-        meta.appendChild(
-            category
-        );
-
-        info.appendChild(
-            meta
         );
 
         // ==============================
