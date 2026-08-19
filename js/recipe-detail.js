@@ -1,5 +1,5 @@
 // js/recipe-detail.js
-// bk2
+// bk3
 // 詳細画面を担当
 
 import { RecipeForm } from "./recipe-form.js";
@@ -405,18 +405,20 @@ function renderIngredients(ratio) {
                     ratio
                 );
 
+            if (ingredient.group) {
 
-            if (
-                ingredient.group &&
-                ["A", "B", "C", "D"]
-                    .includes(ingredient.group)
-            ) {
+                const groupClass =
+                    `group-${ingredient.group}`;
 
-                row.classList.add(
-                    `group-${ingredient.group}`
-                );
+                if (
+                    GROUP_CLASSES.includes(groupClass)
+                ) {
+
+                    row.classList.add(
+                        groupClass
+                    );
+                }
             }
-
 
             row.appendChild(group);
             row.appendChild(name);
@@ -791,6 +793,7 @@ function setupEditForm() {
 
                 renderRecipe();
 
+                savingNotice.close();
 
                 console.log(
                     "GitHubへの保存成功:",

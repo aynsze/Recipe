@@ -499,6 +499,22 @@ main {
     color: #777;
 }
 
+.ingredient-item.group-A {
+    background: #ffeaea;
+}
+
+.ingredient-item.group-B {
+    background: #eaffea;
+}
+
+.ingredient-item.group-C {
+    background: #eaeaff;
+}
+
+.ingredient-item.group-D {
+    background: #fff7d8;
+}
+
 /* ==============================
    事前準備・手順
    ============================== */
