@@ -94,9 +94,9 @@ export class RecipeList {
     /**
      * レシピを一覧に追加
      *
-     * ※現在はローカル上の一覧に追加するだけ。
-     *   GitHub API実装時に保存処理を追加する。
-     */
+     * GitHubへの保存はmain.js側で行い、
+     * 保存成功後にこのメソッドで一覧へ反映する。
+         */
     addRecipe(recipe) {
 
         this.recipes.push(recipe);
@@ -650,7 +650,7 @@ export class RecipeList {
 
         source.textContent =
             SOURCE_LABELS[
-                recipe.source
+            recipe.source
             ] || "";
 
 

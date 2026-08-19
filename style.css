@@ -851,6 +851,137 @@ main {
 }
 
 /* ==============================
+   GitHub認証
+   ============================== */
+
+.github-auth {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.github-login-button {
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    background: #fff;
+    color: #333;
+    font-size: 12px;
+}
+
+.github-login-button:active {
+    background: #f3f3f3;
+}
+
+.github-login-button:disabled {
+    opacity: 1;
+    cursor: default;
+}
+
+/* ==============================
+   GitHubログインモーダル
+   ============================== */
+
+.github-login-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    visibility: hidden;
+    opacity: 0;
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+}
+
+.github-login-modal.open {
+    visibility: visible;
+    opacity: 1;
+}
+
+.github-login-modal-content {
+    width: 100%;
+    max-width: 420px;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    background: #fff;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.github-login-modal-content h2 {
+    margin: 0 0 18px;
+    font-size: 18px;
+}
+
+.github-login-modal-content label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+}
+
+.github-login-modal-content input {
+    width: 100%;
+    height: 42px;
+
+    padding: 0 10px;
+
+    border: 1px solid #ddd;
+    border-radius: 7px;
+
+    background: #fff;
+    outline: none;
+}
+
+.github-login-modal-content input:focus {
+    border-color: #999;
+}
+
+.github-login-modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+
+    margin-top: 18px;
+}
+
+.github-login-modal-buttons button {
+    height: 38px;
+    padding: 0 14px;
+
+    border: 1px solid #ddd;
+    border-radius: 7px;
+
+    background: #fff;
+}
+
+.github-login-modal-buttons button:last-child {
+    background: #222;
+    border-color: #222;
+    color: #fff;
+}
+
+.github-login-modal-buttons button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* ==============================
    PC
    ============================== */
 

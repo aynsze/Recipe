@@ -3,8 +3,10 @@
 // 詳細画面を担当
 
 import { RecipeForm } from "./recipe-form.js";
-import { github } from "./github-config.js";
+import { getGithubApi, isLoggedIn } from "./github-auth.js";
 import { showNotice } from "./notice.js";
+import { setupGithubAuth } from "./github-auth-ui.js";
+
 
 const SOURCE_LABELS = {
     original: "自作",
@@ -62,6 +64,9 @@ async function loadRecipe(file) {
             .split("/")
             .pop();
 
+
+    const github =
+        getGithubApi();
 
     const githubFile =
         await github.getFile(
@@ -768,6 +773,14 @@ function setupEditForm() {
 
 
                 // ==============================
+                // GitHub API取得
+                // ==============================
+
+                const github =
+                    getGithubApi();
+
+
+                // ==============================
                 // GitHubへ保存
                 // ==============================
 
@@ -855,10 +868,10 @@ function setupBackButton() {
 
 
 /* ==============================
-   初期化
+   アプリ読み込み
    ============================== */
 
-async function main() {
+async function loadRecipeApp() {
 
     try {
 
@@ -899,6 +912,24 @@ async function main() {
                 </button>
             </main>
         `;
+    }
+}
+
+
+/* ==============================
+   初期化
+   ============================== */
+
+async function main() {
+
+    setupGithubAuth(
+        loadRecipeApp
+    );
+
+
+    if (isLoggedIn()) {
+
+        await loadRecipeApp();
     }
 }
 

@@ -17,19 +17,20 @@
 
     <header class="header">
         <h1>レシピ</h1>
+        <div class="github-auth">
+            <button id="githubLoginButton" class="github-login-button" type="button">
+                ログイン
+            </button>
+
+        </div>
+
     </header>
 
     <main>
 
         <!-- 検索 -->
         <section class="search-section">
-            <input
-                type="search"
-                id="searchInput"
-                class="search-input"
-                placeholder="レシピを検索"
-                autocomplete="off"
-            >
+            <input type="search" id="searchInput" class="search-input" placeholder="レシピを検索" autocomplete="off">
         </section>
 
         <!-- カテゴリ -->
@@ -61,41 +62,23 @@
     </main>
 
     <!-- レシピ追加ボタン -->
-    <button
-        id="addButton"
-        class="add-button"
-        type="button"
-        aria-label="レシピを追加"
-    >
+    <button id="addButton" class="add-button" type="button" aria-label="レシピを追加">
         ＋
     </button>
 
     <!-- レシピ追加画面 -->
     <div id="modalBackground" class="modal-background"></div>
 
-    <section
-        id="recipeModal"
-        class="recipe-modal"
-        aria-hidden="true"
-    >
+    <section id="recipeModal" class="recipe-modal" aria-hidden="true">
 
         <header class="modal-header">
-            <button
-                id="closeModalButton"
-                class="modal-close-button"
-                type="button"
-                aria-label="閉じる"
-            >
+            <button id="closeModalButton" class="modal-close-button" type="button" aria-label="閉じる">
                 ×
             </button>
 
             <h2>レシピ追加</h2>
 
-            <button
-                id="saveRecipeButton"
-                class="modal-save-button"
-                type="button"
-            >
+            <button id="saveRecipeButton" class="modal-save-button" type="button">
                 保存
             </button>
         </header>
@@ -107,20 +90,12 @@
 
                 <div class="form-field">
                     <label for="inputTitle">タイトル</label>
-                    <input
-                        id="inputTitle"
-                        type="text"
-                        placeholder="レシピ名"
-                    >
+                    <input id="inputTitle" type="text" placeholder="レシピ名">
                 </div>
 
                 <div class="file-name-field">
                     <label for="inputFileName">ファイル名</label>
-                    <input
-                        id="inputFileName"
-                        type="text"
-                        placeholder="例：マカロニグラタン"
-                    >
+                    <input id="inputFileName" type="text" placeholder="例：マカロニグラタン">
                     <small>日本語使用可。拡張子 .json は自動で付与</small>
                 </div>
 
@@ -155,14 +130,7 @@
                     <label for="inputRating">評価</label>
 
                     <div class="rating-input">
-                        <input
-                            id="inputRating"
-                            type="range"
-                            min="0"
-                            max="5"
-                            step="1"
-                            value="0"
-                        >
+                        <input id="inputRating" type="range" min="0" max="5" step="1" value="0">
 
                         <span id="ratingValue">未設定</span>
                     </div>
@@ -171,21 +139,13 @@
                 <div class="form-field">
                     <label for="inputImage">画像URL</label>
 
-                    <input
-                        id="inputImage"
-                        type="url"
-                        placeholder="https://..."
-                    >
+                    <input id="inputImage" type="url" placeholder="https://...">
                 </div>
 
                 <div class="form-field">
                     <label for="inputUrl">レシピURL</label>
 
-                    <input
-                        id="inputUrl"
-                        type="url"
-                        placeholder="https://..."
-                    >
+                    <input id="inputUrl" type="url" placeholder="https://...">
                 </div>
 
             </section>
@@ -196,11 +156,7 @@
                 <div class="section-heading">
                     <h3>材料</h3>
 
-                    <button
-                        id="addIngredientButton"
-                        class="small-add-button"
-                        type="button"
-                    >
+                    <button id="addIngredientButton" class="small-add-button" type="button">
                         ＋ 材料
                     </button>
                 </div>
@@ -215,11 +171,7 @@
                 <div class="section-heading">
                     <h3>事前準備</h3>
 
-                    <button
-                        id="addPreparationButton"
-                        class="small-add-button"
-                        type="button"
-                    >
+                    <button id="addPreparationButton" class="small-add-button" type="button">
                         ＋ 追加
                     </button>
                 </div>
@@ -234,11 +186,7 @@
                 <div class="section-heading">
                     <h3>手順</h3>
 
-                    <button
-                        id="addStepButton"
-                        class="small-add-button"
-                        type="button"
-                    >
+                    <button id="addStepButton" class="small-add-button" type="button">
                         ＋ 手順
                     </button>
                 </div>
@@ -254,17 +202,44 @@
                     <h3>メモ</h3>
                 </div>
 
-                <textarea
-                    id="inputMemo"
-                    class="memo-input"
-                    placeholder="メモ"
-                ></textarea>
+                <textarea id="inputMemo" class="memo-input" placeholder="メモ"></textarea>
 
             </section>
 
         </div>
 
     </section>
+
+    <div id="githubLoginModalBackground" class="modal-background"></div>
+
+
+    <div id="githubLoginModal" class="github-login-modal">
+
+        <div class="github-login-modal-content">
+
+            <h2>GitHubログイン</h2>
+
+            <label for="githubPatInput">
+                Personal Access Token
+            </label>
+
+            <input id="githubPatInput" type="password" autocomplete="off" placeholder="PATを入力">
+
+            <div class="github-login-modal-buttons">
+
+                <button id="githubLoginCancelButton" type="button">
+                    キャンセル
+                </button>
+
+                <button id="githubLoginSubmitButton" type="button">
+                    ログイン
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 
     <script type="module" src="js/main.js"></script>
 

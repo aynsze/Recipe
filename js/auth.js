@@ -1,35 +1,69 @@
 // js/auth.js
-// bk1
+// bk2
 // GitHub認証情報を管理
 
 
-let githubToken = null;
+const TOKEN_KEY =
+    "github-token";
 
 
-// PATを設定
+/* ==============================
+   PATを設定
+   ============================== */
+
 export function setToken(token) {
 
-    githubToken =
-        token?.trim() || null;
+    const value =
+        token?.trim() || "";
+
+
+    if (value) {
+
+        sessionStorage.setItem(
+            TOKEN_KEY,
+            value
+        );
+
+    } else {
+
+        sessionStorage.removeItem(
+            TOKEN_KEY
+        );
+    }
 }
 
 
-// PATを取得
+/* ==============================
+   PATを取得
+   ============================== */
+
 export function getToken() {
 
-    return githubToken;
+    return sessionStorage.getItem(
+        TOKEN_KEY
+    );
 }
 
 
-// PATを破棄
+/* ==============================
+   PATを破棄
+   ============================== */
+
 export function clearToken() {
 
-    githubToken = null;
+    sessionStorage.removeItem(
+        TOKEN_KEY
+    );
 }
 
 
-// PATが設定されているか
+/* ==============================
+   PATが設定されているか
+   ============================== */
+
 export function hasToken() {
 
-    return Boolean(githubToken);
+    return Boolean(
+        getToken()
+    );
 }

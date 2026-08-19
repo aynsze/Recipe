@@ -1,12 +1,13 @@
 // js/main.js
-// bk6
+// bk8
 // 全体を組み合わせるファイル
 
 
 import { RecipeList } from "./recipe-list.js";
 import { RecipeForm } from "./recipe-form.js";
-import { github } from "./github-config.js";
+import { getGithubApi, isLoggedIn } from "./github-auth.js";
 import { showNotice } from "./notice.js";
+import { setupGithubAuth } from "./github-auth-ui.js";
 
 
 // ==============================
@@ -14,6 +15,10 @@ import { showNotice } from "./notice.js";
 // ==============================
 
 async function loadIndex() {
+
+    const github =
+        getGithubApi();
+
 
     const file =
         await github.getFile(
@@ -80,11 +85,16 @@ async function loadIndex() {
     return uniqueFiles;
 }
 
+
 // ==============================
 // レシピJSON読み込み
 // ==============================
 
 async function loadRecipes(files) {
+
+    const github =
+        getGithubApi();
+
 
     const results =
         await Promise.all(
@@ -322,10 +332,8 @@ function initializeApp(recipes) {
                 // ==============================
 
                 /*
-                 * ファイル名は変更しない。
-                 *
-                 * editingRecipe.file を
-                 * そのまま既存ファイル名として使用する。
+                 * 現在は一覧画面からの編集処理は
+                 * まだ実装しない。
                  */
 
                 console.log(
@@ -365,6 +373,7 @@ function initializeApp(recipes) {
                     return false;
                 }
 
+
                 const savingNotice =
                     showNotice(
                         "保存中...",
@@ -373,7 +382,12 @@ function initializeApp(recipes) {
                         }
                     );
 
+
                 try {
+
+                    const github =
+                        getGithubApi();
+
 
                     // ==============================
                     // レシピJSON作成
@@ -461,6 +475,9 @@ function initializeApp(recipes) {
                     );
 
 
+                    savingNotice.close();
+
+
                     // ==============================
                     // 画面に追加
                     // ==============================
@@ -484,6 +501,7 @@ function initializeApp(recipes) {
 
                     savingNotice.close();
 
+
                     console.error(
                         "GitHubへの保存失敗:",
                         error
@@ -493,6 +511,7 @@ function initializeApp(recipes) {
                     alert(
                         `レシピの保存に失敗しました。\n\n${error.message}`
                     );
+
 
                     return false;
                 }
@@ -513,20 +532,23 @@ function initializeApp(recipes) {
 
 
 // ==============================
-// アプリ起動
+// アプリ読み込み
 // ==============================
 
-async function main() {
+async function loadApp() {
 
     try {
 
         const files =
             await loadIndex();
 
+
         const recipes =
             await loadRecipes(files);
 
+
         initializeApp(recipes);
+
 
     } catch (error) {
 
@@ -538,6 +560,7 @@ async function main() {
                 "recipeGrid"
             );
 
+
         grid.innerHTML = "";
 
 
@@ -546,11 +569,31 @@ async function main() {
                 "emptyMessage"
             );
 
+
         message.textContent =
             "レシピデータを読み込めませんでした";
 
+
         message.style.display =
             "block";
+    }
+}
+
+
+// ==============================
+// 初期化
+// ==============================
+
+async function main() {
+
+    setupGithubAuth(
+        loadApp
+    );
+
+
+    if (isLoggedIn()) {
+
+        await loadApp();
     }
 }
 
