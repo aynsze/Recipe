@@ -185,7 +185,7 @@ function initializeApp(recipes) {
         document.getElementById("modalBackground");
 
     const modalContent =
-        document.querySelector(".modal-content"),
+        document.querySelector(".modal-content");
 
     const closeModalButton =
         document.getElementById("closeModalButton");
