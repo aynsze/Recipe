@@ -455,13 +455,16 @@ export class RecipeForm {
             );
 
         amount.type =
-            "text";
+            "number";
 
         amount.className =
             "ingredient-amount";
 
         amount.placeholder =
             "量";
+
+        amount.step =
+            "any";
 
         if (
             data.amount !== undefined &&
