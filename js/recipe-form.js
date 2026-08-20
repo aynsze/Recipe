@@ -1,5 +1,5 @@
 // js/recipe-form.js
-// bk3
+// bk4
 // JSON型を作る部分、追加・編集共通化
 
 const UNIT_OPTIONS = [
@@ -50,10 +50,6 @@ export class RecipeForm {
         ingredientsContainer,
         preparationContainer,
         stepsContainer,
-
-        addIngredientButton,
-        addPreparationButton,
-        addStepButton
     }) {
 
         this.modal = modal;
@@ -83,15 +79,6 @@ export class RecipeForm {
         this.stepsContainer =
             stepsContainer;
 
-        this.addIngredientButton =
-            addIngredientButton;
-
-        this.addPreparationButton =
-            addPreparationButton;
-
-        this.addStepButton =
-            addStepButton;
-
         this.onSave = null;
 
         this.editingRecipe = null;
@@ -118,21 +105,6 @@ export class RecipeForm {
         this.ratingInput.addEventListener(
             "input",
             () => this.updateRating()
-        );
-
-        this.addIngredientButton.addEventListener(
-            "click",
-            () => this.addIngredientRow()
-        );
-
-        this.addPreparationButton.addEventListener(
-            "click",
-            () => this.addPreparationRow()
-        );
-
-        this.addStepButton.addEventListener(
-            "click",
-            () => this.addStepRow()
         );
 
         this.saveButton.addEventListener(
@@ -528,6 +500,39 @@ export class RecipeForm {
             () => row.remove()
         );
 
+        /*
+         * 最後の材料名に入力されたら、
+         * 次の空行を自動追加する。
+         */
+        name.addEventListener(
+            "input",
+            () => {
+
+                if (
+                    name.value.trim() === ""
+                ) {
+                    return;
+                }
+
+                const rows =
+                    this.ingredientsContainer
+                        .querySelectorAll(
+                            ".ingredient-row"
+                        );
+
+                const lastRow =
+                    rows[rows.length - 1];
+
+                if (
+                    row !== lastRow
+                ) {
+                    return;
+                }
+
+                this.addIngredientRow();
+            }
+        );
+
         row.appendChild(group);
         row.appendChild(name);
         row.appendChild(amount);
@@ -573,6 +578,35 @@ export class RecipeForm {
 
         input.value =
             value;
+
+        input.addEventListener(
+            "input",
+            () => {
+
+                if (
+                    input.value.trim() === ""
+                ) {
+                    return;
+                }
+
+                const rows =
+                    this.preparationContainer
+                        .querySelectorAll(
+                            ".preparation-row"
+                        );
+
+                const lastRow =
+                    rows[rows.length - 1];
+
+                if (
+                    row !== lastRow
+                ) {
+                    return;
+                }
+
+                this.addPreparationRow();
+            }
+        );
 
         const remove =
             document.createElement(
@@ -643,6 +677,35 @@ export class RecipeForm {
 
         input.value =
             value;
+
+        input.addEventListener(
+            "input",
+            () => {
+
+                if (
+                    input.value.trim() === ""
+                ) {
+                    return;
+                }
+
+                const rows =
+                    this.stepsContainer
+                        .querySelectorAll(
+                            ".step-row"
+                        );
+
+                const lastRow =
+                    rows[rows.length - 1];
+
+                if (
+                    row !== lastRow
+                ) {
+                    return;
+                }
+
+                this.addStepRow();
+            }
+        );
 
         const remove =
             document.createElement(

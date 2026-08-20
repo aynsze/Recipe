@@ -1,5 +1,5 @@
 // js/main.js
-// bk9
+// bk10
 // 全体を組み合わせるファイル
 
 import { RecipeList } from "./recipe-list.js";
@@ -274,22 +274,7 @@ function initializeApp(recipes) {
                 document.getElementById("preparation"),
 
             stepsContainer:
-                document.getElementById("steps"),
-
-            addIngredientButton:
-                document.getElementById(
-                    "addIngredientButton"
-                ),
-
-            addPreparationButton:
-                document.getElementById(
-                    "addPreparationButton"
-                ),
-
-            addStepButton:
-                document.getElementById(
-                    "addStepButton"
-                )
+                document.getElementById("steps")
         });
 
     // ==============================

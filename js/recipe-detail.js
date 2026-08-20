@@ -638,21 +638,6 @@ function setupEditForm() {
             stepsContainer:
                 document.getElementById(
                     "stepsForm"
-                ),
-
-            addIngredientButton:
-                document.getElementById(
-                    "addIngredientButton"
-                ),
-
-            addPreparationButton:
-                document.getElementById(
-                    "addPreparationButton"
-                ),
-
-            addStepButton:
-                document.getElementById(
-                    "addStepButton"
                 )
         });
 
