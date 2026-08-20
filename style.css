@@ -413,10 +413,7 @@ main {
     gap: 10px;
 }
 
-.file-name-field {
-    margin-bottom: 12px;
-}
-
+/* ファイル名 */
 .file-name-label {
     display: flex;
     align-items: baseline;
@@ -434,11 +431,6 @@ main {
     font-size: 11px;
 }
 
-.file-name-field input {
-    width: 100%;
-    box-sizing: border-box;
-}
-
 /* ==============================
    評価
    ============================== */
@@ -446,14 +438,14 @@ main {
 .rating-input {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 .rating-input span {
-    width: 45px;
+    width: 50px;
     text-align: center;
     color: #555;
-    font-size: 11px;
+    font-size: 14px;
 }
 
 /* ==============================
