@@ -490,6 +490,14 @@ main {
     background: #fff;
 }
 
+.ingredient-row select {
+    font-size: 13px;
+}
+
+.ingredient-row .ingredient-name {
+    font-size: 16px;
+}
+
 .ingredient-row .amount {
     text-align: right;
 }
