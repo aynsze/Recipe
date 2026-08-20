@@ -195,6 +195,13 @@ export class RecipeForm {
                 0;
         }
 
+        requestAnimationFrame(
+            () => {
+
+                this.titleInput.focus();
+            }
+        );
+
         this.titleInput.focus();
     }
 
