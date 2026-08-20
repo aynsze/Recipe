@@ -1,0 +1,40 @@
+{
+  "title": "タコの酢の物",
+  "source": "arranged",
+  "category": "副菜",
+  "rating": 4,
+  "image": "https://img-global-jp.cpcdn.com/recipes/2357754/640x640sq80/photo.webp",
+  "url": "https://cookpad.com/jp/recipes/19043944",
+  "ingredients": [
+    {
+      "group": null,
+      "name": "茹でタコ",
+      "amount": 100,
+      "unit": "g"
+    },
+    {
+      "group": "A",
+      "name": "砂糖",
+      "amount": 3,
+      "unit": "小さじ"
+    },
+    {
+      "group": "A",
+      "name": "醤油",
+      "amount": 1,
+      "unit": "小さじ"
+    },
+    {
+      "group": "A",
+      "name": "酢",
+      "amount": 6,
+      "unit": "小さじ"
+    }
+  ],
+  "preparation": [],
+  "steps": [
+    "タコを切る",
+    "ボウルの中でAを砂糖が溶けるまでよく混ぜておく"
+  ],
+  "memo": "酢：砂糖：醤油は、6：3：1の割合"
+}
