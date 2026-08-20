@@ -125,7 +125,7 @@ main {
     margin: 0 0 7px 5px;
     font-size: 13px;
     color: #666;
-    background: red;
+    background: green;
     /* ★　↑　デバッグ用　後で消す */
 }
 
@@ -545,6 +545,7 @@ main {
     border-radius: 7px;
     resize: none;
     overflow-y: hidden;
+    line-height: 28px;
 }
 
 .memo-input {

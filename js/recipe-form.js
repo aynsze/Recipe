@@ -1,5 +1,5 @@
 // js/recipe-form.js
-// bk4
+// bk5
 // JSON型を作る部分、追加・編集共通化
 
 const UNIT_OPTIONS = [
@@ -500,7 +500,22 @@ export class RecipeForm {
 
         remove.addEventListener(
             "click",
-            () => row.remove()
+            () => {
+
+                const rows =
+                    this.ingredientsContainer
+                        .querySelectorAll(
+                            ".ingredient-row"
+                        );
+
+                if (rows.length <= 1) {
+                    return;
+                }
+
+                row.remove();
+
+                this.updateIngredientRemoveButtons();
+            }
         );
 
         /*
@@ -544,6 +559,8 @@ export class RecipeForm {
 
         this.ingredientsContainer
             .appendChild(row);
+
+        this.updateIngredientRemoveButtons();
     }
 
     /* ==============================
@@ -629,9 +646,20 @@ export class RecipeForm {
             "click",
             () => {
 
+                const rows =
+                    this.preparationContainer
+                        .querySelectorAll(
+                            ".preparation-row"
+                        );
+
+                if (rows.length <= 1) {
+                    return;
+                }
+
                 row.remove();
 
                 this.updatePreparationNumbers();
+                this.updatePreparationRemoveButtons();
             }
         );
 
@@ -643,6 +671,7 @@ export class RecipeForm {
             .appendChild(row);
 
         this.updatePreparationNumbers();
+        this.updatePreparationRemoveButtons();
     }
 
     /* ==============================
@@ -728,9 +757,20 @@ export class RecipeForm {
             "click",
             () => {
 
+                const rows =
+                    this.stepsContainer
+                        .querySelectorAll(
+                            ".step-row"
+                        );
+
+                if (rows.length <= 1) {
+                    return;
+                }
+
                 row.remove();
 
                 this.updateStepNumbers();
+                this.updateStepRemoveButtons();
             }
         );
 
@@ -742,6 +782,86 @@ export class RecipeForm {
             .appendChild(row);
 
         this.updateStepNumbers();
+        this.updateStepRemoveButtons();
+    }
+
+    /* ==============================
+       材料削除ボタン
+       ============================== */
+
+    updateIngredientRemoveButtons() {
+
+        const rows =
+            this.ingredientsContainer
+                .querySelectorAll(
+                    ".ingredient-row"
+                );
+
+        rows.forEach(row => {
+
+            const remove =
+                row.querySelector(
+                    ".remove-button"
+                );
+
+            remove.style.visibility =
+                rows.length <= 1
+                    ? "hidden"
+                    : "visible";
+        });
+    }
+
+    /* ==============================
+       事前準備削除ボタン
+       ============================== */
+
+    updatePreparationRemoveButtons() {
+
+        const rows =
+            this.preparationContainer
+                .querySelectorAll(
+                    ".preparation-row"
+                );
+
+        rows.forEach(row => {
+
+            const remove =
+                row.querySelector(
+                    ".remove-button"
+                );
+
+            remove.style.visibility =
+                rows.length <= 1
+                    ? "hidden"
+                    : "visible";
+        });
+    }
+
+
+    /* ==============================
+       手順削除ボタン
+       ============================== */
+
+    updateStepRemoveButtons() {
+
+        const rows =
+            this.stepsContainer
+                .querySelectorAll(
+                    ".step-row"
+                );
+
+        rows.forEach(row => {
+
+            const remove =
+                row.querySelector(
+                    ".remove-button"
+                );
+
+            remove.style.visibility =
+                rows.length <= 1
+                    ? "hidden"
+                    : "visible";
+        });
     }
 
     /* ==============================
