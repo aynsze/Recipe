@@ -490,10 +490,6 @@ main {
     background: #fff;
 }
 
-.ingredient-row select {
-    font-size: 13px;
-}
-
 .ingredient-row .amount {
     text-align: right;
 }
@@ -546,11 +542,13 @@ main {
 .preparation-input,
 .step-input {
     width: 100%;
-    min-height: 40px;
+    min-height: 32px;
+    height: 32px;
     padding: 2px 9px;
     border: 1px solid #ddd;
     border-radius: 7px;
-    resize: vertical;
+    resize: none;
+    overflow-y: hidden;
 }
 
 .memo-input {
@@ -736,10 +734,6 @@ main {
 }
 
 .ingredient-name {
-    min-width: 0;
-    padding-left: 9px;
-    border-right: 1px solid #e5e5e5;
-    font-size: 15px;
     overflow-wrap: anywhere;
 }
 
