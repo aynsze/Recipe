@@ -343,6 +343,16 @@ main {
 }
 
 /* ==============================
+   モーダル入力
+   ============================== */
+
+.recipe-modal input,
+.recipe-modal select,
+.recipe-modal textarea {
+    font-size: 16px;
+}
+
+/* ==============================
    モーダル内容
    ============================== */
 
@@ -416,7 +426,7 @@ main {
 
 .file-name-label small {
     color: #777;
-    font-size: 11px;
+    font-size: 9px;
 }
 
 .file-name-field input {
