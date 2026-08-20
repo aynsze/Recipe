@@ -184,6 +184,9 @@ function initializeApp(recipes) {
     const modalBackground =
         document.getElementById("modalBackground");
 
+    const modalContent =
+        document.querySelector(".modal-content"),
+
     const closeModalButton =
         document.getElementById("closeModalButton");
 
@@ -229,6 +232,7 @@ function initializeApp(recipes) {
 
             modal,
             modalBackground,
+            modalContent,
 
             closeButton:
                 closeModalButton,

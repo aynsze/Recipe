@@ -565,6 +565,11 @@ function setupEditForm() {
                     "modalBackground"
                 ),
 
+            modalContent:
+                document.querySelector(
+                    ".modal-content"
+                ),
+
             closeButton:
                 document.getElementById(
                     "closeModalButton"

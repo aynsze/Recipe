@@ -32,6 +32,7 @@ export class RecipeForm {
     constructor({
         modal,
         modalBackground,
+        modalContent,
         closeButton,
         saveButton,
 
@@ -57,6 +58,7 @@ export class RecipeForm {
 
         this.modal = modal;
         this.modalBackground = modalBackground;
+        this.modalContent = modalContent;
 
         this.closeButton = closeButton;
         this.saveButton = saveButton;
@@ -178,6 +180,24 @@ export class RecipeForm {
 
         document.body.style.overflow =
             "hidden";
+
+        /*
+         * モーダルを開くたびに
+         * 内容のスクロール位置を先頭に戻す。
+         */
+        this.modalContent.scrollTop = 0;
+
+        /*
+         * 描画完了後にもう一度スクロール位置を固定する。
+         */
+        requestAnimationFrame(() => {
+
+            this.modalContent.scrollTop = 0;
+
+            this.titleInput.focus({
+                preventScroll: true
+            });
+        });
 
         this.titleInput.focus();
     }
