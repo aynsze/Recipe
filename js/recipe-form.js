@@ -179,29 +179,6 @@ export class RecipeForm {
         document.body.style.overflow =
             "hidden";
 
-        /*
-         * モーダルのスクロール位置を
-         * 一番上に戻す
-         */
-
-        const content =
-            this.modal.querySelector(
-                ".modal-content"
-            );
-
-        if (content) {
-
-            content.scrollTop =
-                0;
-        }
-
-        requestAnimationFrame(
-            () => {
-
-                this.titleInput.focus();
-            }
-        );
-
         this.titleInput.focus();
     }
 
