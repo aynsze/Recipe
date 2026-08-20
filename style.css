@@ -126,7 +126,7 @@ main {
     font-size: 13px;
     color: #666;
     /* background: red; */
-    /* ★　↑　デバッグ用　後で消す */
+    /* ★　↑　デバッグ用 */
 }
 
 .sort-section select {
@@ -218,7 +218,6 @@ main {
 }
 
 .recipe-info {
-    /* padding: 7px 8px 8px; */
     padding: 6px 4px;
 }
 
@@ -700,14 +699,14 @@ main {
 .ingredients-list {
     overflow: hidden;
     border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    border-radius: 7px;
     background: #fff;
     margin-top: 5px;
 }
 
 .ingredient-item {
     display: grid;
-    grid-template-columns: 38px minmax(0, 1fr) 90px;
+    grid-template-columns: 38px minmax(0, 1fr) 100px;
     min-height: 40px;
     border-bottom: 1px solid #e5e5e5;
 }
@@ -727,7 +726,6 @@ main {
     justify-content: center;
     border-right: 1px solid #e5e5e5;
     color: #666;
-    font-size: 12px;
 }
 
 .ingredient-name {
@@ -738,9 +736,7 @@ main {
 }
 
 .ingredient-amount {
-    justify-content: flex-end;
-    padding-right: 9px;
-    text-align: right;
+    padding-left: 9px;
     white-space: nowrap;
 }
 
