@@ -125,7 +125,7 @@ main {
     margin: 0 0 7px 5px;
     font-size: 13px;
     color: #666;
-    background: blue;
+    background: red;
     /* ★　↑　デバッグ用　後で消す */
 }
 
@@ -459,14 +459,6 @@ main {
     margin-bottom: 10px;
 }
 
-.small-add-button {
-    padding: 5px 9px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background: #fff;
-    font-size: 12px;
-}
-
 /* ==============================
    材料
    ============================== */
@@ -481,7 +473,7 @@ main {
 .ingredient-row input,
 .ingredient-row select {
     min-width: 0;
-    height: 40px;
+    height: 32px;
     padding: 0 5px;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -501,12 +493,10 @@ main {
 }
 
 .remove-button {
-    width: 32px;
-    height: 40px;
     border: none;
     border-radius: 6px;
-    background: #f3f3f3;
     color: #777;
+    padding-bottom: 5px;
 }
 
 .ingredient-item.group-A {
@@ -539,10 +529,10 @@ main {
 
 .step-number {
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
+    padding-top: 6px;
     color: #777;
-    font-size: 13px;
 }
 
 .preparation-input,
@@ -795,10 +785,11 @@ main {
 
 .detail-memo {
     padding: 12px;
+    margin-top: 5px;
     border-radius: 8px;
     background: #f3f3f3;
     color: #555;
-    line-height: 1.7;
+    line-height: 1.2;
     white-space: pre-wrap;
 }
 
