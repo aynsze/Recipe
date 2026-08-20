@@ -198,8 +198,6 @@ export class RecipeForm {
                 preventScroll: true
             });
         });
-
-        this.titleInput.focus();
     }
 
     /* ==============================
