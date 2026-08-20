@@ -125,7 +125,7 @@ main {
     margin: 0 0 7px 5px;
     font-size: 13px;
     color: #666;
-    background: green;
+    /* background: red; */
     /* ★　↑　デバッグ用　後で消す */
 }
 
@@ -496,7 +496,7 @@ main {
     border: none;
     border-radius: 6px;
     color: #777;
-    padding-bottom: 5px;
+    padding-bottom: 3px;
 }
 
 .ingredient-item.group-A {
@@ -786,10 +786,6 @@ main {
 
 .detail-memo {
     padding: 12px;
-    margin-top: 5px;
-    border-radius: 8px;
-    background: #f3f3f3;
-    color: #555;
     line-height: 1.2;
     white-space: pre-wrap;
 }
