@@ -1,0 +1,28 @@
+{
+  "title": "おかえりマンゴー",
+  "source": "arranged",
+  "category": "他",
+  "rating": 5,
+  "image": "",
+  "url": "",
+  "ingredients": [
+    {
+      "group": null,
+      "name": "ドライマンゴー",
+      "amount": 30,
+      "unit": "g"
+    },
+    {
+      "group": null,
+      "name": "ヨーグルト",
+      "amount": 200,
+      "unit": "g"
+    }
+  ],
+  "preparation": [],
+  "steps": [
+    "ヨーグルトの中に、マンゴーを重ならずに入れる",
+    "1日～2日冷蔵庫に置く"
+  ],
+  "memo": ""
+}
