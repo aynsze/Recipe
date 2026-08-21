@@ -1,0 +1,46 @@
+{
+  "title": "牛肉のしぐれ煮",
+  "source": "reference",
+  "category": "肉類",
+  "rating": 4,
+  "image": "",
+  "url": "https://www.instagram.com/p/DQ8JiAADw_p/",
+  "ingredients": [
+    {
+      "group": null,
+      "name": "牛肉",
+      "amount": 200,
+      "unit": "g"
+    },
+    {
+      "group": "A",
+      "name": "砂糖",
+      "amount": 20,
+      "unit": "g"
+    },
+    {
+      "group": "A",
+      "name": "酒",
+      "amount": 30,
+      "unit": "g"
+    },
+    {
+      "group": "A",
+      "name": "みりん",
+      "amount": 60,
+      "unit": "g"
+    },
+    {
+      "group": "A",
+      "name": "醤油",
+      "amount": 30,
+      "unit": "g"
+    }
+  ],
+  "preparation": [],
+  "steps": [
+    "鍋にAを入れて中火で加熱",
+    "ふつふつと沸いたら牛肉を入れる"
+  ],
+  "memo": "卵入れたら美味しい"
+}
