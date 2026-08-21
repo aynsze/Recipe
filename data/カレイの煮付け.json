@@ -2,11 +2,56 @@
   "title": "カレイの煮付け",
   "source": "arranged",
   "category": "主食",
-  "rating": 0,
-  "image": "",
-  "url": "https://delishkitchen.tv/recipes/197489468502967377#google_vignette",
-  "ingredients": [],
-  "preparation": [],
-  "steps": [],
-  "memo": ""
+  "rating": 4,
+  "image": "https://image.delishkitchen.tv/recipe/197489468502967377/1.webp",
+  "url": "https://delishkitchen.tv/recipes/197489468502967377",
+  "ingredients": [
+    {
+      "group": null,
+      "name": "カレイ",
+      "amount": 4,
+      "unit": "個"
+    },
+    {
+      "group": "A",
+      "name": "砂糖",
+      "amount": 1.2,
+      "unit": "大さじ"
+    },
+    {
+      "group": "A",
+      "name": "酒",
+      "amount": 3,
+      "unit": "大さじ"
+    },
+    {
+      "group": "A",
+      "name": "醤油",
+      "amount": 3,
+      "unit": "大さじ"
+    },
+    {
+      "group": "A",
+      "name": "みりん",
+      "amount": 2,
+      "unit": "大さじ"
+    },
+    {
+      "group": "A",
+      "name": "水",
+      "amount": 200,
+      "unit": "ml"
+    }
+  ],
+  "preparation": [
+    "汚れや臭みが気になる場合は、ざるにカレイをのせ、表面が白くなるまで湯（90℃ほど）をまわしかける",
+    "水で表面の汚れを取り除き、キッチンペーパーで水気をふきとる"
+  ],
+  "steps": [
+    "鍋にAを入れて中火で熱す",
+    "ふつふつとしたら切れ目を上にしてカレイを入れる",
+    "煮汁をかけ、落としぶたをして弱火で15分煮る",
+    "落としぶたを取り、スプーンで煮汁をかけながら、5分程煮る"
+  ],
+  "memo": "2時間ぐらい染み込ませたら美味しい"
 }
