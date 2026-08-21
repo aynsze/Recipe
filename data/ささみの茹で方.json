@@ -1,0 +1,36 @@
+{
+  "title": "ささみの茹で方",
+  "source": "reference",
+  "category": "肉類",
+  "rating": 4,
+  "image": "https://www.sirogohan.com/_files/recipe/images/sasami/sasamib17.JPG",
+  "url": "https://www.sirogohan.com/recipe/sasami/",
+  "ingredients": [
+    {
+      "group": null,
+      "name": "鶏ささみ",
+      "amount": 3,
+      "unit": "本"
+    },
+    {
+      "group": null,
+      "name": "水",
+      "amount": 500,
+      "unit": "ml"
+    },
+    {
+      "group": null,
+      "name": "塩",
+      "amount": 1,
+      "unit": "小さじ"
+    }
+  ],
+  "preparation": [],
+  "steps": [
+    "鍋の水を中火にかけて沸いたら塩を加える",
+    "ささみを入れたら1分ほどそのまま中火にかける",
+    "1分ほどで再沸騰したら火を止めて蓋をする",
+    "8～10分（太めなら10分）蒸らす"
+  ],
+  "memo": "3～4本でも太めのささみだったり、5～6本を加熱する場合は、しっかり加熱できるよう【水750ml+塩小さじ1と1/2】に増やす。\n※ゆで湯もささみの出汁が出ているので、汁物などの料理にできる。"
+}
