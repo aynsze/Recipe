@@ -391,6 +391,10 @@ function setupServingSelect() {
                 note.textContent = "2倍の分量";
                 break;
 
+            case 1.5:
+                note.textContent = "1.5倍の分量";
+                break;
+
             case 0.5:
                 note.textContent = "半分の分量";
                 break;
