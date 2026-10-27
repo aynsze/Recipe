@@ -9,41 +9,15 @@ import {
 
 import { showNotice } from "./notice.js";
 
-/* ==============================
-   認証UI初期化
-   ============================== */
-
+// ====== 認証UI初期化 ======
 export function setupGithubAuth() {
 
-    const loginButton =
-        document.getElementById(
-            "githubLoginButton"
-        );
-
-    const modal =
-        document.getElementById(
-            "githubLoginModal"
-        );
-
-    const modalBackground =
-        document.getElementById(
-            "githubLoginModalBackground"
-        );
-
-    const cancelButton =
-        document.getElementById(
-            "githubLoginCancelButton"
-        );
-
-    const submitButton =
-        document.getElementById(
-            "githubLoginSubmitButton"
-        );
-
-    const patInput =
-        document.getElementById(
-            "githubPatInput"
-        );
+    const loginButton = document.getElementById("githubLoginButton");
+    const modal = document.getElementById("githubLoginModal");
+    const modalBackground = document.getElementById("githubLoginModalBackground");
+    const cancelButton = document.getElementById("githubLoginCancelButton");
+    const submitButton = document.getElementById("githubLoginSubmitButton");
+    const patInput = document.getElementById("githubPatInput");
 
     if (
         !loginButton ||
@@ -61,34 +35,18 @@ export function setupGithubAuth() {
         return;
     }
 
-    /* ==============================
-       状態表示
-       ============================== */
-
+    // 状態表示
     function updateStatus() {
-
         if (isLoggedIn()) {
-
-            loginButton.textContent =
-                "ログイン中";
-
-            loginButton.disabled =
-                true;
-
+            loginButton.textContent = "ログイン中";
+            loginButton.disabled = true;
         } else {
-
-            loginButton.textContent =
-                "ログイン";
-
-            loginButton.disabled =
-                false;
+            loginButton.textContent = "ログイン";
+            loginButton.disabled = false;
         }
     }
 
-    /* ==============================
-       モーダルを開く
-       ============================== */
-
+    // モーダルを開く
     function openModal() {
 
         patInput.value = "";
@@ -102,10 +60,7 @@ export function setupGithubAuth() {
         patInput.focus();
     }
 
-    /* ==============================
-       モーダルを閉じる
-       ============================== */
-
+    // モーダルを閉じる
     function closeModal() {
 
         modal.classList.remove("open");
@@ -117,26 +72,19 @@ export function setupGithubAuth() {
         patInput.value = "";
     }
 
-    /* ==============================
-       ログイン
-       ============================== */
-
+    // ログイン
     async function handleLogin() {
 
-        const token =
-            patInput.value.trim();
+        const token = patInput.value.trim();
 
         if (!token) {
-
             showNotice(
                 "PATを入力してください"
             );
-
             return;
         }
 
-        submitButton.disabled =
-            true;
+        submitButton.disabled = true;
 
         const notice =
             showNotice(
@@ -174,50 +122,24 @@ export function setupGithubAuth() {
             );
 
         } finally {
-
-            submitButton.disabled =
-                false;
+            submitButton.disabled = false;
         }
     }
 
-    /* ==============================
-       イベント
-       ============================== */
+    // イベント
+    loginButton.addEventListener("click", openModal);
+    cancelButton.addEventListener("click", closeModal);
+    modalBackground.addEventListener("click", closeModal);
+    submitButton.addEventListener("click", handleLogin);
 
-    loginButton.addEventListener(
-        "click",
-        openModal
-    );
-
-    cancelButton.addEventListener(
-        "click",
-        closeModal
-    );
-
-    modalBackground.addEventListener(
-        "click",
-        closeModal
-    );
-
-    submitButton.addEventListener(
-        "click",
-        handleLogin
-    );
-
-    patInput.addEventListener(
-        "keydown",
-        event => {
-
-            if (event.key === "Enter") {
-
-                handleLogin();
-            }
+    patInput.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+            handleLogin();
         }
+    }
+
     );
 
-    /* ==============================
-       初期状態
-       ============================== */
-
+    // 初期状態
     updateStatus();
 }

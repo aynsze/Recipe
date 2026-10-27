@@ -9,21 +9,12 @@ export function showNotice(
     } = {}
 ) {
 
-    const notice =
-        document.createElement("div");
-
-    notice.className =
-        "recipe-notice";
-
-    notice.textContent =
-        message;
-
-    document.body.appendChild(
-        notice
-    );
+    const notice = document.createElement("div");
+    notice.className = "recipe-notice";
+    notice.textContent = message;
+    document.body.appendChild(notice);
 
     requestAnimationFrame(() => {
-
         notice.classList.add(
             "show"
         );
@@ -32,7 +23,6 @@ export function showNotice(
     let timer = null;
 
     if (duration !== null) {
-
         timer =
             setTimeout(() => {
 
@@ -48,20 +38,14 @@ export function showNotice(
         }
 
         if (timer !== null) {
-
             clearTimeout(timer);
-
             timer = null;
         }
 
-        notice.classList.remove(
-            "show"
-        );
+        notice.classList.remove("show");
 
         setTimeout(() => {
-
             notice.remove();
-
         }, 300);
     }
 

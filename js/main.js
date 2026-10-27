@@ -8,14 +8,10 @@ import { getGithubApi, isLoggedIn } from "./github-auth.js";
 import { showNotice } from "./notice.js";
 import { setupGithubAuth } from "./github-auth-ui.js";
 
-// ==============================
-// index.json読み込み
-// ==============================
-
+// ===== index.json読み込み =====
 async function loadIndex() {
 
-    const github =
-        getGithubApi();
+    const github = getGithubApi();
 
     const file =
         await github.getFile(
@@ -27,20 +23,15 @@ async function loadIndex() {
             file.content
         );
 
-    const files =
-        JSON.parse(content);
+    const files = JSON.parse(content);
 
     if (!Array.isArray(files)) {
-
         throw new Error(
             "index.jsonは配列である必要があります"
         );
     }
 
-    // ==============================
     // ファイル名の重複チェック
-    // ==============================
-
     const seen =
         new Set();
 
@@ -49,39 +40,30 @@ async function loadIndex() {
     files.forEach(file => {
 
         if (typeof file !== "string") {
-
             showNotice(
                 "index.jsonに文字列ではないファイル名があります"
             );
-
             return;
         }
 
         if (seen.has(file)) {
-
             showNotice(
                 `index.jsonに重複したファイル名があります: ${file}`
             );
-
             return;
         }
 
         seen.add(file);
-
         uniqueFiles.push(file);
     });
 
     return uniqueFiles;
 }
 
-// ==============================
-// レシピJSON読み込み
-// ==============================
-
+// ===== レシピJSON読み込み =====
 async function loadRecipes(files) {
 
-    const github =
-        getGithubApi();
+    const github = getGithubApi();
 
     const results =
         await Promise.all(
@@ -89,7 +71,6 @@ async function loadRecipes(files) {
             files.map(async file => {
 
                 try {
-
                     const githubFile =
                         await github.getFile(
                             `data/${file}`
@@ -104,14 +85,11 @@ async function loadRecipes(files) {
                         JSON.parse(content);
 
                     return {
-
                         success:
                             true,
 
                         recipe: {
-
                             ...recipe,
-
                             file
                         }
                     };
@@ -128,10 +106,8 @@ async function loadRecipes(files) {
                     );
 
                     return {
-
                         success:
                             false,
-
                         recipe:
                             null
                     };
@@ -150,72 +126,36 @@ async function loadRecipes(files) {
         );
 }
 
-// ==============================
-// アプリ初期化
-// ==============================
-
+// ===== アプリ初期化 =====
 function initializeApp(recipes) {
 
-    // ==============================
-    // DOM
-    // ==============================
+    // DOM要素取得
+    const recipeGrid = document.getElementById("recipeGrid");
+    const emptyMessage = document.getElementById("emptyMessage");
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const categoryList = document.getElementById("categoryList");
+    const addButton = document.getElementById("addButton");
 
-    const recipeGrid =
-        document.getElementById("recipeGrid");
+    const modal = document.getElementById("recipeModal");
+    const modalBackground = document.getElementById("modalBackground");
+    const modalContent = document.querySelector(".modal-content");
 
-    const emptyMessage =
-        document.getElementById("emptyMessage");
+    const closeModalButton = document.getElementById("closeModalButton");
+    const saveRecipeButton = document.getElementById("saveRecipeButton");
 
-    const searchInput =
-        document.getElementById("searchInput");
-
-    const sortSelect =
-        document.getElementById("sortSelect");
-
-    const categoryList =
-        document.getElementById("categoryList");
-
-    const addButton =
-        document.getElementById("addButton");
-
-    const modal =
-        document.getElementById("recipeModal");
-
-    const modalBackground =
-        document.getElementById("modalBackground");
-
-    const modalContent =
-        document.querySelector(".modal-content");
-
-    const closeModalButton =
-        document.getElementById("closeModalButton");
-
-    const saveRecipeButton =
-        document.getElementById("saveRecipeButton");
-
-    // ==============================
     // レシピ一覧
-    // ==============================
-
     const recipeList =
         new RecipeList({
 
-            gridElement:
-                recipeGrid,
-
-            emptyMessageElement:
-                emptyMessage,
-
+            gridElement: recipeGrid,
+            emptyMessageElement: emptyMessage,
             searchInput,
-
             sortSelect,
-
-            categoryListElement:
-                categoryList,
+            categoryListElement: categoryList,
 
             onRecipeClick:
                 recipe => {
-
                     location.href =
                         `detail.html?file=${encodeURIComponent(recipe.file)}`;
                 }
@@ -223,10 +163,7 @@ function initializeApp(recipes) {
 
     recipeList.init(recipes);
 
-    // ==============================
     // レシピ追加フォーム
-    // ==============================
-
     const recipeForm =
         new RecipeForm({
 
@@ -234,53 +171,24 @@ function initializeApp(recipes) {
             modalBackground,
             modalContent,
 
-            closeButton:
-                closeModalButton,
+            closeButton: closeModalButton,
+            saveButton: saveRecipeButton,
 
-            saveButton:
-                saveRecipeButton,
-
-            titleInput:
-                document.getElementById("inputTitle"),
-
-            fileNameInput:
-                document.getElementById("inputFileName"),
-
-            categoryInput:
-                document.getElementById("inputCategory"),
-
-            sourceInput:
-                document.getElementById("inputSource"),
-
-            ratingInput:
-                document.getElementById("inputRating"),
-
-            ratingValue:
-                document.getElementById("ratingValue"),
-
-            imageInput:
-                document.getElementById("inputImage"),
-
-            urlInput:
-                document.getElementById("inputUrl"),
-
-            memoInput:
-                document.getElementById("inputMemo"),
-
-            ingredientsContainer:
-                document.getElementById("ingredients"),
-
-            preparationContainer:
-                document.getElementById("preparation"),
-
-            stepsContainer:
-                document.getElementById("steps")
+            titleInput: document.getElementById("inputTitle"),
+            fileNameInput: document.getElementById("inputFileName"),
+            categoryInput: document.getElementById("inputCategory"),
+            sourceInput: document.getElementById("inputSource"),
+            ratingInput: document.getElementById("inputRating"),
+            ratingValue: document.getElementById("ratingValue"),
+            imageInput: document.getElementById("inputImage"),
+            urlInput: document.getElementById("inputUrl"),
+            memoInput: document.getElementById("inputMemo"),
+            ingredientsContainer: document.getElementById("ingredients"),
+            preparationContainer: document.getElementById("preparation"),
+            stepsContainer: document.getElementById("steps")
         });
 
-    // ==============================
     // 保存
-    // ==============================
-
     recipeForm.setSaveHandler(
         async (recipe, editingRecipe, fileName) => {
 
@@ -290,15 +198,7 @@ function initializeApp(recipes) {
 
             if (editingRecipe) {
 
-                // ==============================
                 // 編集
-                // ==============================
-
-                /*
-                 * 現在は一覧画面からの編集処理は
-                 * まだ実装しない。
-                 */
-
                 console.log(
                     "編集ファイル:",
                     editingRecipe.file
@@ -311,14 +211,9 @@ function initializeApp(recipes) {
 
             } else {
 
-                // ==============================
                 // 新規追加
-                // ==============================
 
-                /*
-                 * 既存ファイル名との重複チェック
-                 */
-
+                // 既存ファイル名との重複チェック
                 const exists =
                     recipeList.recipes.some(
                         existingRecipe =>
@@ -326,11 +221,9 @@ function initializeApp(recipes) {
                     );
 
                 if (exists) {
-
                     showNotice(
                         `ファイル名が重複しています: ${fileName}`
                     );
-
                     return false;
                 }
 
@@ -343,14 +236,10 @@ function initializeApp(recipes) {
                     );
 
                 try {
-
                     const github =
                         getGithubApi();
 
-                    // ==============================
                     // レシピJSON作成
-                    // ==============================
-
                     const content =
                         JSON.stringify(
                             recipe,
@@ -358,10 +247,7 @@ function initializeApp(recipes) {
                             2
                         );
 
-                    // ==============================
                     // index.json取得
-                    // ==============================
-
                     const indexFile =
                         await github.getFile(
                             "data/index.json"
@@ -382,10 +268,7 @@ function initializeApp(recipes) {
                         );
                     }
 
-                    // ==============================
                     // index.jsonに追加
-                    // ==============================
-
                     files.push(fileName);
 
                     const newIndexContent =
@@ -399,42 +282,29 @@ function initializeApp(recipes) {
                     // レシピJSON + index.json
                     // 1コミットでGitHubへ保存
                     // ==============================
-
                     await github.commitFiles(
-
                         [
-
                             {
                                 path:
                                     `data/${fileName}`,
-
                                 content:
                                     content
                             },
-
                             {
                                 path:
                                     "data/index.json",
-
                                 content:
                                     newIndexContent
                             }
-
                         ],
-
                         `feat: レシピ「${recipe.title}」を追加`
                     );
 
                     savingNotice.close();
 
-                    // ==============================
                     // 画面に追加
-                    // ==============================
-
                     recipeList.addRecipe({
-
                         ...recipe,
-
                         file:
                             fileName
                     });
@@ -463,43 +333,31 @@ function initializeApp(recipes) {
         }
     );
 
-    // ==============================
     // 追加ボタン
-    // ==============================
+    addButton.addEventListener("click", () => {
+        /*
+         * 閲覧は未ログインでも可能。
+         *
+         * ただしレシピ追加には
+         * GitHubログインが必要。
+         */
 
-    addButton.addEventListener(
-        "click",
-        () => {
+        if (!isLoggedIn()) {
+            showNotice(
+                "レシピを追加するにはGitHubにログインしてください"
+            );
 
-            /*
-             * 閲覧は未ログインでも可能。
-             *
-             * ただしレシピ追加には
-             * GitHubログインが必要。
-             */
-
-            if (!isLoggedIn()) {
-
-                showNotice(
-                    "レシピを追加するにはGitHubにログインしてください"
-                );
-
-                return;
-            }
-
-            recipeForm.open();
+            return;
         }
+        recipeForm.open();
+    }
     );
 }
 
-// ==============================
-// アプリ読み込み
-// ==============================
-
+// ===== アプリ読み込み =====
 async function loadApp() {
 
     try {
-
         const files =
             await loadIndex();
 
@@ -512,31 +370,16 @@ async function loadApp() {
 
         console.error(error);
 
-        const grid =
-            document.getElementById(
-                "recipeGrid"
-            );
+        const grid = document.getElementById("recipeGrid");
+        grid.innerHTML = "";
 
-        grid.innerHTML =
-            "";
-
-        const message =
-            document.getElementById(
-                "emptyMessage"
-            );
-
-        message.textContent =
-            "レシピデータを読み込めませんでした";
-
-        message.style.display =
-            "block";
+        const message = document.getElementById("emptyMessage");
+        message.textContent = "レシピデータを読み込めませんでした";
+        message.style.display = "block";
     }
 }
 
-// ==============================
-// 初期化
-// ==============================
-
+// ===== 初期化 =====
 async function main() {
 
     /*

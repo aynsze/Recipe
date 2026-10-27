@@ -24,10 +24,7 @@ let recipe = null;
 let recipeFile = null;
 let recipeSha = null;
 
-/* ==============================
-   URLからファイル名を取得
-   ============================== */
-
+// ===== URLからファイル名を取得 =====
 function getRecipeFile() {
 
     const params =
@@ -36,14 +33,10 @@ function getRecipeFile() {
     return params.get("file");
 }
 
-/* ==============================
-   レシピJSON読み込み
-   ============================== */
-
+// ===== レシピJSON読み込み =====
 async function loadRecipe(file) {
 
     if (!file) {
-
         throw new Error(
             "レシピファイルが指定されていません"
         );
@@ -78,9 +71,7 @@ async function loadRecipe(file) {
     return JSON.parse(content);
 }
 
-/* ==============================
-   基本情報
-   ============================== */
+// ===== 基本情報 =====
 
 function renderBasicInfo() {
 
@@ -108,79 +99,42 @@ function renderBasicInfo() {
         typeof recipe.image === "string" &&
         recipe.image.trim() !== ""
     ) {
-
-        image.src =
-            recipe.image;
-
-        image.alt =
-            recipe.title || "";
-
-        image.style.display =
-            "block";
-
-        noImage.style.display =
-            "none";
-
+        image.src = recipe.image;
+        image.alt = recipe.title || "";
+        image.style.display = "block";
+        noImage.style.display = "none";
     } else {
-
-        image.style.display =
-            "none";
-
-        noImage.style.display =
-            "flex";
+        image.style.display = "none";
+        noImage.style.display = "flex";
     }
 
-    image.addEventListener(
-        "error",
-        () => {
-
-            image.style.display =
-                "none";
-
-            noImage.style.display =
-                "flex";
-        }
+    image.addEventListener("error", () => {
+        image.style.display = "none";
+        noImage.style.display = "flex";
+    }
     );
 
     /* メタ情報 */
-
-    const meta =
-        document.getElementById(
-            "recipeMeta"
-        );
-
+    const meta = document.getElementById("recipeMeta");
     meta.innerHTML = "";
 
-    const rating =
-        Number(recipe.rating) || 0;
-
-    const ratingElement =
-        document.createElement("span");
-
-    ratingElement.className =
-        "meta-rating";
+    // 評価
+    const rating = Number(recipe.rating) || 0;
+    const ratingElement = document.createElement("span");
+    ratingElement.className = "meta-rating";
 
     if (rating > 0) {
-
         ratingElement.textContent =
             "★".repeat(rating) +
             "☆".repeat(5 - rating);
-
     } else {
-
-        ratingElement.textContent =
-            "評価なし";
+        ratingElement.textContent = "評価なし";
     }
 
-    const category =
-        document.createElement("span");
+    const category = document.createElement("span");
+    category.textContent = recipe.category || "";
 
-    category.textContent =
-        recipe.category || "";
-
-    const source =
-        document.createElement("span");
-
+    const source = document.createElement("span");
     source.textContent =
         SOURCE_LABELS[recipe.source] || "";
 
@@ -189,14 +143,10 @@ function renderBasicInfo() {
     meta.appendChild(source);
 
     /* URL */
-
     renderUrl();
 }
 
-/* ==============================
-   URL表示
-   ============================== */
-
+// ===== URL表示 =====
 function renderUrl() {
 
     const area =
@@ -210,40 +160,25 @@ function renderUrl() {
         !recipe.url ||
         !recipe.url.trim()
     ) {
-
-        area.style.display =
-            "none";
-
+        area.style.display = "none";
         return;
     }
 
-    area.style.display =
-        "block";
+    area.style.display = "block";
 
-    const link =
-        document.createElement("a");
+    const link = document.createElement("a");
 
-    link.href =
-        recipe.url;
-
-    link.target =
-        "_blank";
-
-    link.rel =
-        "noopener noreferrer";
-
-    link.textContent =
-        `🔗 ${recipe.url}`;
+    link.href = recipe.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = `🔗 ${recipe.url}`;
 
     area.appendChild(
         link
     );
 }
 
-/* ==============================
-   分量
-   ============================== */
-
+// ===== 分量 =====
 function formatAmount(ingredient, ratio) {
 
     const amount =
@@ -279,7 +214,6 @@ function formatAmount(ingredient, ratio) {
             ingredient.unit === "中さじ" ||
             ingredient.unit === "小さじ"
         ) {
-
             return (
                 ingredient.unit +
                 value
@@ -298,10 +232,7 @@ function formatAmount(ingredient, ratio) {
     );
 }
 
-/* ==============================
-   材料
-   ============================== */
-
+// ===== 材料 =====
 function renderIngredients(ratio) {
 
     const container =
@@ -314,42 +245,22 @@ function renderIngredients(ratio) {
     (recipe.ingredients || [])
         .forEach(ingredient => {
 
-            const row =
-                document.createElement("div");
-
-            row.className =
-                "ingredient-item";
+            const row = document.createElement("div");
+            row.className = "ingredient-item";
 
             /* group */
-
-            const group =
-                document.createElement("div");
-
-            group.className =
-                "ingredient-group";
-
-            group.textContent =
-                ingredient.group || "";
+            const group = document.createElement("div");
+            group.className = "ingredient-group";
+            group.textContent = ingredient.group || "";
 
             /* name */
-
-            const name =
-                document.createElement("div");
-
-            name.className =
-                "ingredient-name";
-
-            name.textContent =
-                ingredient.name || "";
+            const name = document.createElement("div");
+            name.className = "ingredient-name";
+            name.textContent = ingredient.name || "";
 
             /* amount */
-
-            const amount =
-                document.createElement("div");
-
-            amount.className =
-                "ingredient-amount";
-
+            const amount = document.createElement("div");
+            amount.className = "ingredient-amount";
             amount.textContent =
                 formatAmount(
                     ingredient,
@@ -364,7 +275,6 @@ function renderIngredients(ratio) {
                 if (
                     GROUP_CLASSES.includes(groupClass)
                 ) {
-
                     row.classList.add(
                         groupClass
                     );
@@ -379,21 +289,11 @@ function renderIngredients(ratio) {
         });
 }
 
-/* ==============================
-   事前準備
-   ============================== */
-
+// ===== 事前準備 =====
 function renderPreparation() {
 
-    const section =
-        document.getElementById(
-            "preparationSection"
-        );
-
-    const list =
-        document.getElementById(
-            "preparation"
-        );
+    const section = document.getElementById("preparationSection");
+    const list = document.getElementById("preparation");
 
     list.innerHTML = "";
 
@@ -402,14 +302,12 @@ function renderPreparation() {
 
     if (preparation.length === 0) {
 
-        section.style.display =
-            "none";
+        section.style.display = "none";
 
         return;
     }
 
-    section.style.display =
-        "block";
+    section.style.display = "block";
 
     preparation.forEach(text => {
 
@@ -423,10 +321,7 @@ function renderPreparation() {
     });
 }
 
-/* ==============================
-   手順
-   ============================== */
-
+// ===== 手順 =====
 function renderSteps() {
 
     const list =
@@ -449,21 +344,11 @@ function renderSteps() {
         });
 }
 
-/* ==============================
-   メモ
-   ============================== */
-
+// ===== メモ =====
 function renderMemo() {
 
-    const section =
-        document.getElementById(
-            "memoSection"
-        );
-
-    const memo =
-        document.getElementById(
-            "memo"
-        );
+    const section = document.getElementById("memoSection");
+    const memo = document.getElementById("memo");
 
     memo.textContent =
         recipe.memo || "";
@@ -472,23 +357,15 @@ function renderMemo() {
         !recipe.memo ||
         !recipe.memo.trim()
     ) {
-
-        section.style.display =
-            "none";
-
+        section.style.display = "none";
     } else {
-
-        section.style.display =
-            "block";
+        section.style.display = "block";
     }
 }
 
-/* ==============================
-   全体表示
-   ============================== */
+// ===== 全体表示 =====
 
 function renderRecipe() {
-
     renderBasicInfo();
     renderIngredients(1);
     renderPreparation();
@@ -496,169 +373,78 @@ function renderRecipe() {
     renderMemo();
 }
 
-/* ==============================
-   分量倍率
-   ============================== */
-
+// ===== 分量倍率 =====
 function setupServingSelect() {
 
-    const select =
-        document.getElementById(
-            "servingSelect"
-        );
+    const select = document.getElementById("servingSelect");
+    const note = document.getElementById("servingNote");
 
-    const note =
-        document.getElementById(
-            "servingNote"
-        );
+    select.addEventListener("change", () => {
+        const ratio =
+            Number(select.value);
 
-    select.addEventListener(
-        "change",
-        () => {
+        renderIngredients(ratio);
 
-            const ratio =
-                Number(select.value);
+        switch (ratio) {
 
-            renderIngredients(ratio);
+            case 2:
+                note.textContent = "2倍の分量";
+                break;
 
-            switch (ratio) {
+            case 0.5:
+                note.textContent = "半分の分量";
+                break;
 
-                case 2:
-                    note.textContent =
-                        "2倍の分量";
-                    break;
+            case 0.33:
+                note.textContent = "1/3の分量";
+                break;
 
-                case 0.5:
-                    note.textContent =
-                        "半分の分量";
-                    break;
-
-                case 0.33:
-                    note.textContent =
-                        "1/3の分量";
-                    break;
-
-                default:
-                    note.textContent =
-                        "";
-            }
+            default:
+                note.textContent = "";
         }
+    }
     );
 }
 
-/* ==============================
-   編集フォーム
-   ============================== */
-
+// ===== 編集フォーム =====
 function setupEditForm() {
 
     const recipeForm =
         new RecipeForm({
+            modal: document.getElementById("recipeModal"),
+            modalBackground: document.getElementById("modalBackground"),
+            modalContent: document.querySelector(".modal-content"),
 
-            modal:
-                document.getElementById(
-                    "recipeModal"
-                ),
+            closeButton: document.getElementById("closeModalButton"),
+            saveButton: document.getElementById("saveRecipeButton"),
 
-            modalBackground:
-                document.getElementById(
-                    "modalBackground"
-                ),
+            titleInput: document.getElementById("inputTitle"),
+            fileNameInput: document.getElementById("inputFileName"),
+            categoryInput: document.getElementById("inputCategory"),
+            sourceInput: document.getElementById("inputSource"),
+            ratingInput: document.getElementById("inputRating"),
+            ratingValue: document.getElementById("ratingValue"),
+            imageInput: document.getElementById("inputImage"),
+            urlInput: document.getElementById("inputUrl"),
+            memoInput: document.getElementById("inputMemo"),
 
-            modalContent:
-                document.querySelector(
-                    ".modal-content"
-                ),
-
-            closeButton:
-                document.getElementById(
-                    "closeModalButton"
-                ),
-
-            saveButton:
-                document.getElementById(
-                    "saveRecipeButton"
-                ),
-
-            titleInput:
-                document.getElementById(
-                    "inputTitle"
-                ),
-
-            fileNameInput:
-                document.getElementById(
-                    "inputFileName"
-                ),
-
-            categoryInput:
-                document.getElementById(
-                    "inputCategory"
-                ),
-
-            sourceInput:
-                document.getElementById(
-                    "inputSource"
-                ),
-
-            ratingInput:
-                document.getElementById(
-                    "inputRating"
-                ),
-
-            ratingValue:
-                document.getElementById(
-                    "ratingValue"
-                ),
-
-            imageInput:
-                document.getElementById(
-                    "inputImage"
-                ),
-
-            urlInput:
-                document.getElementById(
-                    "inputUrl"
-                ),
-
-            memoInput:
-                document.getElementById(
-                    "inputMemo"
-                ),
-
-            ingredientsContainer:
-                document.getElementById(
-                    "ingredientsForm"
-                ),
-
-            preparationContainer:
-                document.getElementById(
-                    "preparationForm"
-                ),
-
-            stepsContainer:
-                document.getElementById(
-                    "stepsForm"
-                )
+            ingredientsContainer: document.getElementById("ingredientsForm"),
+            preparationContainer: document.getElementById("preparationForm"),
+            stepsContainer: document.getElementById("stepsForm")
         });
 
     /* 編集ボタン */
-    document.getElementById(
-        "editButton"
-    ).addEventListener(
-        "click",
-        () => {
+    document.getElementById("editButton").addEventListener("click", () => {
+        if (!isLoggedIn()) {
+            showNotice(
+                "レシピを編集するにはGitHubにログインしてください"
+            );
 
-            if (!isLoggedIn()) {
-
-                showNotice(
-                    "レシピを編集するにはGitHubにログインしてください"
-                );
-
-                return;
-            }
-
-            recipeForm.open(recipe);
+            return;
         }
+
+        recipeForm.open(recipe);
+    }
     );
 
     /*
@@ -684,10 +470,7 @@ function setupEditForm() {
 
             try {
 
-                // ==============================
                 // JSON作成
-                // ==============================
-
                 const content =
                     JSON.stringify(
                         updatedRecipe,
@@ -695,17 +478,11 @@ function setupEditForm() {
                         2
                     );
 
-                // ==============================
                 // GitHub API取得
-                // ==============================
-
                 const github =
                     getGithubApi();
 
-                // ==============================
                 // GitHubへ保存
-                // ==============================
-
                 const savedFile =
                     await github.saveFile(
                         `data/${recipeFile}`,
@@ -717,10 +494,7 @@ function setupEditForm() {
                 recipeSha =
                     savedFile.content.sha;
 
-                // ==============================
                 // 画面を更新
-                // ==============================
-
                 recipe =
                     updatedRecipe;
 
@@ -757,10 +531,7 @@ function setupEditForm() {
     );
 }
 
-/* ==============================
-   戻る
-   ============================== */
-
+// ===== 戻る =====
 function setupBackButton() {
 
     document.getElementById(
@@ -782,10 +553,7 @@ function setupBackButton() {
     );
 }
 
-/* ==============================
-   アプリ読み込み
-   ============================== */
-
+// ===== アプリ読み込み =====
 async function loadRecipeApp() {
 
     try {
@@ -799,11 +567,8 @@ async function loadRecipeApp() {
             );
 
         renderRecipe();
-
         setupServingSelect();
-
         setupEditForm();
-
         setupBackButton();
 
     } catch (error) {
@@ -827,10 +592,7 @@ async function loadRecipeApp() {
     }
 }
 
-/* ==============================
-   初期化
-   ============================== */
-
+// ===== 初期化 =====
 async function main() {
 
     /*
@@ -849,12 +611,8 @@ async function main() {
     await loadRecipeApp();
 }
 
-/* ==============================
-   HTMLエスケープ
-   ============================== */
-
+// ===== HTMLエスケープ =====
 function escapeHtml(value) {
-
     return String(value)
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")

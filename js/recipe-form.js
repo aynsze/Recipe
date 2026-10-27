@@ -86,37 +86,15 @@ export class RecipeForm {
         this.setupEvents();
     }
 
-    /* ==============================
-       イベント
-       ============================== */
-
+    // イベント
     setupEvents() {
-
-        this.closeButton.addEventListener(
-            "click",
-            () => this.close()
-        );
-
-        this.modalBackground.addEventListener(
-            "click",
-            () => this.close()
-        );
-
-        this.ratingInput.addEventListener(
-            "input",
-            () => this.updateRating()
-        );
-
-        this.saveButton.addEventListener(
-            "click",
-            () => this.save()
-        );
+        this.closeButton.addEventListener("click", () => this.close());
+        this.modalBackground.addEventListener("click", () => this.close());
+        this.ratingInput.addEventListener("input", () => this.updateRating());
+        this.saveButton.addEventListener("click", () => this.save());
     }
 
-    /* ==============================
-       開く
-       ============================== */
-
+    // 開く
     open(recipe = null) {
 
         this.editingRecipe =
@@ -125,17 +103,13 @@ export class RecipeForm {
                 : null;
 
         if (recipe) {
-
             // 編集
             this.loadRecipe(recipe);
-
             this.setFileNameMode(false);
 
         } else {
-
             // 新規追加
             this.reset();
-
             this.setFileNameMode(true);
         }
 
@@ -172,10 +146,7 @@ export class RecipeForm {
         });
     }
 
-    /* ==============================
-       ファイル名入力欄の表示
-       ============================== */
-
+    // ファイル名入力欄の表示
     setFileNameMode(isNew) {
 
         const wrapper =
@@ -191,10 +162,7 @@ export class RecipeForm {
             isNew ? "" : "none";
     }
 
-    /* ==============================
-       閉じる
-       ============================== */
-
+    // 閉じる
     close() {
 
         this.modal.classList.remove(
@@ -217,52 +185,31 @@ export class RecipeForm {
             null;
     }
 
-    /* ==============================
-       新規フォーム
-       ============================== */
-
+    // 新規フォーム
     reset() {
-
         this.titleInput.value = "";
-
         this.fileNameInput.value = "";
 
-        this.categoryInput.value =
-            "主食";
+        this.categoryInput.value = "主食";
+        this.sourceInput.value = "original";
 
-        this.sourceInput.value =
-            "original";
-
-        this.ratingInput.value =
-            "0";
-
-        this.ratingValue.textContent =
-            "未設定";
+        this.ratingInput.value = "0";
+        this.ratingValue.textContent = "未設定";
 
         this.imageInput.value = "";
-
         this.urlInput.value = "";
-
         this.memoInput.value = "";
 
-        this.ingredientsContainer.innerHTML =
-            "";
-
-        this.preparationContainer.innerHTML =
-            "";
-
-        this.stepsContainer.innerHTML =
-            "";
+        this.ingredientsContainer.innerHTML = "";
+        this.preparationContainer.innerHTML = "";
+        this.stepsContainer.innerHTML = "";
 
         this.addIngredientRow();
         this.addPreparationRow();
         this.addStepRow();
     }
 
-    /* ==============================
-       編集対象をフォームに読み込む
-       ============================== */
-
+    // 編集対象をフォームに読み込む
     loadRecipe(recipe) {
 
         this.titleInput.value =
@@ -288,17 +235,11 @@ export class RecipeForm {
         this.memoInput.value =
             recipe.memo || "";
 
-        this.ingredientsContainer.innerHTML =
-            "";
-
-        this.preparationContainer.innerHTML =
-            "";
-
-        this.stepsContainer.innerHTML =
-            "";
+        this.ingredientsContainer.innerHTML = "";
+        this.preparationContainer.innerHTML = "";
+        this.stepsContainer.innerHTML = "";
 
         /* 材料 */
-
         const ingredients =
             Array.isArray(recipe.ingredients)
                 ? recipe.ingredients
@@ -306,7 +247,6 @@ export class RecipeForm {
 
         ingredients.forEach(
             ingredient => {
-
                 this.addIngredientRow(
                     ingredient
                 );
@@ -316,7 +256,6 @@ export class RecipeForm {
         this.addIngredientRow();
 
         /* 事前準備 */
-
         const preparation =
             Array.isArray(recipe.preparation)
                 ? recipe.preparation
@@ -324,7 +263,6 @@ export class RecipeForm {
 
         preparation.forEach(
             text => {
-
                 this.addPreparationRow(
                     text
                 );
@@ -334,7 +272,6 @@ export class RecipeForm {
         this.addPreparationRow();
 
         /* 手順 */
-
         const steps =
             Array.isArray(recipe.steps)
                 ? recipe.steps
@@ -352,10 +289,7 @@ export class RecipeForm {
         this.addStepRow();
     }
 
-    /* ==============================
-       評価
-       ============================== */
-
+    // 評価
     updateRating() {
 
         const value =
@@ -369,15 +303,11 @@ export class RecipeForm {
                 : value;
     }
 
-    /* ==============================
-       select作成
-       ============================== */
-
+    // select作成
     createSelect(
         options,
         className
     ) {
-
         const select =
             document.createElement(
                 "select"
@@ -409,19 +339,11 @@ export class RecipeForm {
         return select;
     }
 
-    /* ==============================
-       材料行
-       ============================== */
-
+    // 材料行
     addIngredientRow(data = {}) {
 
-        const row =
-            document.createElement(
-                "div"
-            );
-
-        row.className =
-            "ingredient-row";
+        const row = document.createElement("div");
+        row.className = "ingredient-row";
 
         const group =
             this.createSelect(
@@ -437,14 +359,9 @@ export class RecipeForm {
                 "input"
             );
 
-        name.type =
-            "text";
-
-        name.className =
-            "ingredient-name";
-
-        name.placeholder =
-            "材料";
+        name.type = "text";
+        name.className = "ingredient-name";
+        name.placeholder = "材料";
 
         name.value =
             data.name || "";
@@ -454,23 +371,15 @@ export class RecipeForm {
                 "input"
             );
 
-        amount.type =
-            "number";
-
-        amount.className =
-            "ingredient-amount";
-
-        amount.placeholder =
-            "量";
-
-        amount.step =
-            "any";
+        amount.type = "number";
+        amount.className = "ingredient-amount";
+        amount.placeholder = "量";
+        amount.step = "any";
 
         if (
             data.amount !== undefined &&
             data.amount !== null
         ) {
-
             amount.value =
                 data.amount;
         }
@@ -489,66 +398,57 @@ export class RecipeForm {
                 "button"
             );
 
-        remove.type =
-            "button";
+        remove.type = "button";
+        remove.className = "remove-button";
+        remove.textContent = "×";
 
-        remove.className =
-            "remove-button";
+        remove.addEventListener("click", () => {
 
-        remove.textContent =
-            "×";
+            const rows =
+                this.ingredientsContainer
+                    .querySelectorAll(
+                        ".ingredient-row"
+                    );
 
-        remove.addEventListener(
-            "click",
-            () => {
-
-                const rows =
-                    this.ingredientsContainer
-                        .querySelectorAll(
-                            ".ingredient-row"
-                        );
-
-                if (rows.length <= 1) {
-                    return;
-                }
-
-                row.remove();
-
-                this.updateIngredientRemoveButtons();
+            if (rows.length <= 1) {
+                return;
             }
+
+            row.remove();
+
+            this.updateIngredientRemoveButtons();
+        }
         );
 
         /*
          * 最後の材料名に入力されたら、
          * 次の空行を自動追加する。
          */
-        name.addEventListener(
-            "input",
-            () => {
+        name.addEventListener("input", () => {
 
-                if (
-                    name.value.trim() === ""
-                ) {
-                    return;
-                }
-
-                const rows =
-                    this.ingredientsContainer
-                        .querySelectorAll(
-                            ".ingredient-row"
-                        );
-
-                const lastRow =
-                    rows[rows.length - 1];
-
-                if (
-                    row !== lastRow
-                ) {
-                    return;
-                }
-
-                this.addIngredientRow();
+            if (
+                name.value.trim() === ""
+            ) {
+                return;
             }
+
+            const rows =
+                this.ingredientsContainer
+                    .querySelectorAll(
+                        ".ingredient-row"
+                    );
+
+            const lastRow =
+                rows[rows.length - 1];
+
+            if (
+                row !== lastRow
+            ) {
+                return;
+            }
+
+            this.addIngredientRow();
+        }
         );
 
         row.appendChild(group);
@@ -563,69 +463,48 @@ export class RecipeForm {
         this.updateIngredientRemoveButtons();
     }
 
-    /* ==============================
-       事前準備行
-       ============================== */
-
+    // 事前準備行
     addPreparationRow(value = "") {
 
-        const row =
-            document.createElement(
-                "div"
-            );
-
-        row.className =
-            "preparation-row";
+        const row = document.createElement("div");
+        row.className = "preparation-row";
 
         const number =
             document.createElement(
                 "div"
             );
 
-        number.className =
-            "step-number";
+        number.className = "step-number";
 
-        const input =
-            document.createElement(
-                "textarea"
-            );
+        const input = document.createElement("textarea");
+        input.className = "preparation-input";
+        input.placeholder = "事前準備";
+        input.value = value;
+        input.addEventListener("input", () => {
 
-        input.className =
-            "preparation-input";
-
-        input.placeholder =
-            "事前準備";
-
-        input.value =
-            value;
-
-        input.addEventListener(
-            "input",
-            () => {
-
-                if (
-                    input.value.trim() === ""
-                ) {
-                    return;
-                }
-
-                const rows =
-                    this.preparationContainer
-                        .querySelectorAll(
-                            ".preparation-row"
-                        );
-
-                const lastRow =
-                    rows[rows.length - 1];
-
-                if (
-                    row !== lastRow
-                ) {
-                    return;
-                }
-
-                this.addPreparationRow();
+            if (
+                input.value.trim() === ""
+            ) {
+                return;
             }
+
+            const rows =
+                this.preparationContainer
+                    .querySelectorAll(
+                        ".preparation-row"
+                    );
+
+            const lastRow =
+                rows[rows.length - 1];
+
+            if (
+                row !== lastRow
+            ) {
+                return;
+            }
+
+            this.addPreparationRow();
+        }
         );
 
         const remove =
@@ -633,34 +512,26 @@ export class RecipeForm {
                 "button"
             );
 
-        remove.type =
-            "button";
+        remove.type = "button";
+        remove.className = "remove-button";
+        remove.textContent = "×";
+        remove.addEventListener("click", () => {
 
-        remove.className =
-            "remove-button";
+            const rows =
+                this.preparationContainer
+                    .querySelectorAll(
+                        ".preparation-row"
+                    );
 
-        remove.textContent =
-            "×";
-
-        remove.addEventListener(
-            "click",
-            () => {
-
-                const rows =
-                    this.preparationContainer
-                        .querySelectorAll(
-                            ".preparation-row"
-                        );
-
-                if (rows.length <= 1) {
-                    return;
-                }
-
-                row.remove();
-
-                this.updatePreparationNumbers();
-                this.updatePreparationRemoveButtons();
+            if (rows.length <= 1) {
+                return;
             }
+
+            row.remove();
+
+            this.updatePreparationNumbers();
+            this.updatePreparationRemoveButtons();
+        }
         );
 
         row.appendChild(number);
@@ -674,104 +545,70 @@ export class RecipeForm {
         this.updatePreparationRemoveButtons();
     }
 
-    /* ==============================
-       手順行
-       ============================== */
-
+    // 手順行
     addStepRow(value = "") {
 
-        const row =
-            document.createElement(
-                "div"
-            );
+        const row = document.createElement("div");
+        row.className = "step-row";
 
-        row.className =
-            "step-row";
+        const number = document.createElement("div");
+        number.className = "step-number";
 
-        const number =
-            document.createElement(
-                "div"
-            );
+        const input = document.createElement("textarea");
+        input.className = "step-input";
+        input.placeholder = "手順";
+        input.value = value;
 
-        number.className =
-            "step-number";
+        input.addEventListener("input", () => {
 
-        const input =
-            document.createElement(
-                "textarea"
-            );
-
-        input.className =
-            "step-input";
-
-        input.placeholder =
-            "手順";
-
-        input.value =
-            value;
-
-        input.addEventListener(
-            "input",
-            () => {
-
-                if (
-                    input.value.trim() === ""
-                ) {
-                    return;
-                }
-
-                const rows =
-                    this.stepsContainer
-                        .querySelectorAll(
-                            ".step-row"
-                        );
-
-                const lastRow =
-                    rows[rows.length - 1];
-
-                if (
-                    row !== lastRow
-                ) {
-                    return;
-                }
-
-                this.addStepRow();
+            if (
+                input.value.trim() === ""
+            ) {
+                return;
             }
+
+            const rows =
+                this.stepsContainer
+                    .querySelectorAll(
+                        ".step-row"
+                    );
+
+            const lastRow =
+                rows[rows.length - 1];
+
+            if (
+                row !== lastRow
+            ) {
+                return;
+            }
+
+            this.addStepRow();
+        }
         );
 
-        const remove =
-            document.createElement(
-                "button"
-            );
+        const remove = document.createElement("button");
 
-        remove.type =
-            "button";
+        remove.type = "button";
+        remove.className = "remove-button";
+        remove.textContent = "×";
 
-        remove.className =
-            "remove-button";
+        remove.addEventListener("click", () => {
 
-        remove.textContent =
-            "×";
+            const rows =
+                this.stepsContainer
+                    .querySelectorAll(
+                        ".step-row"
+                    );
 
-        remove.addEventListener(
-            "click",
-            () => {
-
-                const rows =
-                    this.stepsContainer
-                        .querySelectorAll(
-                            ".step-row"
-                        );
-
-                if (rows.length <= 1) {
-                    return;
-                }
-
-                row.remove();
-
-                this.updateStepNumbers();
-                this.updateStepRemoveButtons();
+            if (rows.length <= 1) {
+                return;
             }
+
+            row.remove();
+
+            this.updateStepNumbers();
+            this.updateStepRemoveButtons();
+        }
         );
 
         row.appendChild(number);
@@ -785,10 +622,7 @@ export class RecipeForm {
         this.updateStepRemoveButtons();
     }
 
-    /* ==============================
-       材料削除ボタン
-       ============================== */
-
+    // 材料削除ボタン
     updateIngredientRemoveButtons() {
 
         const rows =
@@ -811,10 +645,7 @@ export class RecipeForm {
         });
     }
 
-    /* ==============================
-       事前準備削除ボタン
-       ============================== */
-
+    // 事前準備削除ボタン
     updatePreparationRemoveButtons() {
 
         const rows =
@@ -838,10 +669,7 @@ export class RecipeForm {
     }
 
 
-    /* ==============================
-       手順削除ボタン
-       ============================== */
-
+    // 手順削除ボタン
     updateStepRemoveButtons() {
 
         const rows =
@@ -864,10 +692,7 @@ export class RecipeForm {
         });
     }
 
-    /* ==============================
-       番号
-       ============================== */
-
+    // 番号
     updatePreparationNumbers() {
 
         const rows =
@@ -888,7 +713,6 @@ export class RecipeForm {
     }
 
     updateStepNumbers() {
-
         const rows =
             this.stepsContainer
                 .querySelectorAll(
@@ -906,10 +730,7 @@ export class RecipeForm {
         );
     }
 
-    /* ==============================
-       材料取得
-       ============================== */
-
+    // 材料取得
     getIngredients() {
 
         const ingredients = [];
@@ -959,20 +780,15 @@ export class RecipeForm {
                     Number(amountValue)
                 )
             ) {
-
                 amount =
                     Number(amountValue);
             }
 
             ingredients.push({
-
                 group:
                     group || null,
-
                 name,
-
                 amount,
-
                 unit:
                     unit || null
             });
@@ -981,10 +797,7 @@ export class RecipeForm {
         return ingredients;
     }
 
-    /* ==============================
-       事前準備取得
-       ============================== */
-
+    // 事前準備取得
     getPreparation() {
 
         const preparation = [];
@@ -1012,10 +825,7 @@ export class RecipeForm {
         return preparation;
     }
 
-    /* ==============================
-       手順取得
-       ============================== */
-
+    // 手順取得
     getSteps() {
 
         const steps = [];
@@ -1043,64 +853,37 @@ export class RecipeForm {
         return steps;
     }
 
-    /* ==============================
-       レシピJSON作成
-       ============================== */
-
+    // レシピJSON作成
     getRecipe() {
 
         return {
 
-            title:
-                this.titleInput.value.trim(),
-
-            source:
-                this.sourceInput.value,
-
-            category:
-                this.categoryInput.value,
+            title: this.titleInput.value.trim(),
+            source: this.sourceInput.value,
+            category: this.categoryInput.value,
 
             rating:
                 Number(
                     this.ratingInput.value
                 ),
 
-            image:
-                this.imageInput.value.trim(),
-
-            url:
-                this.urlInput.value.trim(),
-
-            ingredients:
-                this.getIngredients(),
-
-            preparation:
-                this.getPreparation(),
-
-            steps:
-                this.getSteps(),
-
-            memo:
-                this.memoInput.value.trim()
+            image: this.imageInput.value.trim(),
+            url: this.urlInput.value.trim(),
+            ingredients: this.getIngredients(),
+            preparation: this.getPreparation(),
+            steps: this.getSteps(),
+            memo: this.memoInput.value.trim()
         };
     }
 
-    /* ==============================
-       ファイル名
-       ============================== */
-
+    // ファイル名
     getFileName() {
 
         let fileName =
             this.fileNameInput.value.trim();
 
-        /*
-         * ファイル名が空欄の場合は
-         * タイトルから自動生成する。
-         */
-
+        // ファイル名が空欄の場合はタイトルから自動生成
         if (!fileName) {
-
             fileName =
                 this.titleInput.value.trim();
         }
@@ -1125,26 +908,19 @@ export class RecipeForm {
             return null;
         }
 
-        /*
-         * .jsonが付いていなければ追加
-         */
-
+        // .jsonが付いていなければ追加
         if (
             !fileName
                 .toLowerCase()
                 .endsWith(".json")
         ) {
-
             fileName += ".json";
         }
 
         return fileName;
     }
 
-    /* ==============================
-       保存
-       ============================== */
-
+    // 保存
     async save() {
 
         const recipe =
@@ -1208,10 +984,7 @@ export class RecipeForm {
         this.close();
     }
 
-    /* ==============================
-       保存処理を登録
-       ============================== */
-
+    // 保存処理を登録
     setSaveHandler(handler) {
 
         this.onSave =

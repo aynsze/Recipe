@@ -2,35 +2,22 @@
 // bk5
 // GitHub APIとの通信を担当
 
-const API_BASE =
-    "https://api.github.com";
+const API_BASE = "https://api.github.com";
 
 export class GitHubApi {
-
     constructor({
         owner,
         repository,
         token,
         branch = "main"
     }) {
-
-        this.owner =
-            owner;
-
-        this.repository =
-            repository;
-
-        this.token =
-            token;
-
-        this.branch =
-            branch;
+        this.owner = owner;
+        this.repository = repository;
+        this.token = token;
+        this.branch = branch;
     }
 
-    /* ==============================
-       共通リクエスト
-       ============================== */
-
+    // ===== 共通リクエスト =====
     async request(path, options = {}) {
 
         const headers = {
@@ -56,9 +43,7 @@ export class GitHubApi {
          */
 
         if (this.token) {
-
-            headers.Authorization =
-                `Bearer ${this.token}`;
+            headers.Authorization = `Bearer ${this.token}`;
         }
 
         const response =
@@ -66,25 +51,20 @@ export class GitHubApi {
                 `${API_BASE}${path}`,
                 {
                     ...options,
-
                     headers
                 }
             );
 
         if (!response.ok) {
 
-            let message =
-                `${response.status}`;
+            let message = `${response.status}`;
 
             try {
 
-                const data =
-                    await response.json();
+                const data = await response.json();
 
                 if (data.message) {
-
-                    message =
-                        data.message;
+                    message = data.message;
                 }
 
             } catch {
@@ -99,12 +79,8 @@ export class GitHubApi {
         return await response.json();
     }
 
-    /* ==============================
-       パスエンコード
-       ============================== */
-
+    // ===== パスをエンコード =====
     encodePath(path) {
-
         return path
             .split("/")
             .map(
@@ -114,12 +90,8 @@ export class GitHubApi {
             .join("/");
     }
 
-    /* ==============================
-       ファイル取得
-       ============================== */
-
+    // ===== ファイル取得 =====
     async getFile(path) {
-
         return await this.request(
             `/repos/${encodeURIComponent(this.owner)}` +
             `/${encodeURIComponent(this.repository)}` +
@@ -128,32 +100,23 @@ export class GitHubApi {
         );
     }
 
-    /* ==============================
-       ファイル作成・更新
-       ============================== */
-
+    // ===== ファイル保存 =====
     async saveFile(
         path,
         content,
         message,
         sha = null
     ) {
-
         const body = {
-
             message,
-
             content:
                 this.encodeBase64(content),
-
             branch:
                 this.branch
         };
 
         if (sha) {
-
-            body.sha =
-                sha;
+            body.sha = sha;
         }
 
         return await this.request(
@@ -163,17 +126,13 @@ export class GitHubApi {
             {
                 method:
                     "PUT",
-
                 body:
                     JSON.stringify(body)
             }
         );
     }
 
-    /* ==============================
-       ファイル削除
-       ============================== */
-
+    // ===== ファイル削除 =====
     async deleteFile(
         path,
         message,
@@ -187,14 +146,10 @@ export class GitHubApi {
             {
                 method:
                     "DELETE",
-
                 body:
                     JSON.stringify({
-
                         message,
-
                         sha,
-
                         branch:
                             this.branch
                     })
@@ -202,10 +157,7 @@ export class GitHubApi {
         );
     }
 
-    /* ==============================
-       UTF-8 → Base64
-       ============================== */
-
+    // ===== UTF-8 → Base64 =====
     encodeBase64(text) {
 
         const bytes =
@@ -216,17 +168,13 @@ export class GitHubApi {
 
         bytes.forEach(byte => {
 
-            binary +=
-                String.fromCharCode(byte);
+            binary += String.fromCharCode(byte);
         });
 
         return btoa(binary);
     }
 
-    /* ==============================
-       Base64 → UTF-8
-       ============================== */
-
+    // ===== Base64 → UTF-8 =====
     decodeBase64(base64) {
 
         const binary =
@@ -245,10 +193,7 @@ export class GitHubApi {
             .decode(bytes);
     }
 
-    /* ==============================
-       複数ファイルを1コミットで保存
-       ============================== */
-
+    // ===== 複数ファイルを1コミットで保存 =====
     async commitFiles(
         files,
         message
@@ -258,16 +203,12 @@ export class GitHubApi {
             !Array.isArray(files) ||
             files.length === 0
         ) {
-
             throw new Error(
                 "コミットするファイルがありません"
             );
         }
 
-        // ==============================
         // 現在のブランチのcommitを取得
-        // ==============================
-
         const ref =
             await this.request(
                 `/repos/${encodeURIComponent(this.owner)}` +
@@ -278,10 +219,7 @@ export class GitHubApi {
         const baseCommitSha =
             ref.object.sha;
 
-        // ==============================
         // 現在のcommitのtreeを取得
-        // ==============================
-
         const baseCommit =
             await this.request(
                 `/repos/${encodeURIComponent(this.owner)}` +
@@ -289,25 +227,17 @@ export class GitHubApi {
                 `/git/commits/${baseCommitSha}`
             );
 
-        const baseTreeSha =
-            baseCommit.tree.sha;
+        const baseTreeSha = baseCommit.tree.sha;
 
-        // ==============================
         // 新しいtreeを作成
-        // ==============================
-
         const tree =
             files.map(file => ({
-
                 path:
                     file.path,
-
                 mode:
                     "100644",
-
                 type:
                     "blob",
-
                 content:
                     file.content
             }));
@@ -320,22 +250,16 @@ export class GitHubApi {
                 {
                     method:
                         "POST",
-
                     body:
                         JSON.stringify({
-
                             base_tree:
                                 baseTreeSha,
-
                             tree
                         })
                 }
             );
 
-        // ==============================
         // commitを作成
-        // ==============================
-
         const newCommit =
             await this.request(
                 `/repos/${encodeURIComponent(this.owner)}` +
@@ -347,22 +271,16 @@ export class GitHubApi {
 
                     body:
                         JSON.stringify({
-
                             message,
-
                             tree:
                                 newTree.sha,
-
                             parents:
                                 [baseCommitSha]
                         })
                 }
             );
 
-        // ==============================
         // ブランチを新しいcommitへ移動
-        // ==============================
-
         await this.request(
             `/repos/${encodeURIComponent(this.owner)}` +
             `/${encodeURIComponent(this.repository)}` +
@@ -373,10 +291,8 @@ export class GitHubApi {
 
                 body:
                     JSON.stringify({
-
                         sha:
                             newCommit.sha,
-
                         force:
                             false
                     })
