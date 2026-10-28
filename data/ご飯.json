@@ -2,13 +2,25 @@
   "title": "ご飯",
   "source": "original",
   "category": "主食",
-  "rating": 2,
+  "rating": 4,
   "image": "",
   "url": "",
-  "ingredients": [],
-  "preparation": [
-    "ｆｆｆ"
+  "ingredients": [
+    {
+      "group": null,
+      "name": "米",
+      "amount": 560,
+      "unit": "g"
+    }
   ],
-  "steps": [],
-  "memo": ""
+  "preparation": [],
+  "steps": [
+    "3, 4回洗う",
+    "水を+1cmぐらい入れる",
+    "夏なら30分、冬なら1時間ぐらい置く",
+    "5分ぐらい強火で炊く",
+    "沸々して、蓋がカタカタなったら、弱火で10分ぐらい",
+    "最後に10秒ぐらい強火"
+  ],
+  "memo": "米1合160g、3.5合560g"
 }
